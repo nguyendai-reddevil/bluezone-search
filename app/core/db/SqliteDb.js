@@ -398,16 +398,23 @@ const insertKeyword = (keyword) => {
     let slug = convertToSlug(keyword)
     let currentTime = moment().unix()
 
-    console.log('KLLUUUUUU', slug, keyword, currentTime)
-
     const queryValue = `
     insert or replace into historySearch (id, timestamp, keyword, slug) values (
       (select id from historySearch where slug = "${slug}"),
         ${currentTime},
        "${keyword}",
-       "${slug}"`;
+       "${slug}")`;
 
-    const queryGetNumberRow = `select count(*) from historySearch`
+    const queryGetNumberRow = `select count(*) as sumV from historySearch`
+
+    const addToSqlite = (txTemp) => {
+      txTemp.executeSql(
+        queryValue,
+        [],
+        () => resolve(),
+        () => resolve()
+      )
+    }
 
     db = open();
     db.transaction(tx => {
@@ -416,25 +423,13 @@ const insertKeyword = (keyword) => {
         [],
         (txTemp, results) => {
           var len = results.rows.length
-          console.log('GIAT TRIIRIIR', results.rows, results.rows.item(0))
           if (len > 0) {
-            if (results.rows.item(0) >= 500) {
-              // removeKeywordLast()
-              //   .then(() => {
-              //     txTemp.executeSql(
-              //       queryValue,
-              //       [],
-              //       () => resolve(),
-              //       () => resolve()
-              //     )
-              //   }).catch(() => {
-              //     txTemp.executeSql(
-              //       queryValue,
-              //       [],
-              //       () => resolve(),
-              //       () => resolve()
-              //     )
-              //   })
+            if (results.rows.item(0).sumV >= 500) {
+              removeKeywordLast()
+                .then(() => addToSqlite(txTemp))
+                .catch(() => addToSqlite(txTemp))
+            } else {
+              addToSqlite(txTemp)
             }
           }
           resolve();
@@ -447,76 +442,96 @@ const insertKeyword = (keyword) => {
   })
 };
 
-// const removeKeyword = (id) => {
-//   return new Promise((resolve, reject) => {
-//     const queryValue = `delete from historySearch where id = ${id}`;
 
-//     db = open();
-//     db.transaction(tx => {
-//       tx.executeSql(
-//         queryValue,
-//         [],
-//         () => {
-//           resolve();
-//         },
-//         () => {
-//           resolve();
-//         },
-//       );
-//     })
-//   })
-// }
+const removeKeyword = (id) => {
+  return new Promise((resolve, reject) => {
+    const queryValue = `delete from historySearch where id = ${id}`;
 
-// const removeKeywordLast = () => {
-//   return new Promise((resolve, _) => {
-//     const queryValue = `delete from historySearch order by timestamp desc limit 1`;
+    db = open();
+    db.transaction(tx => {
+      tx.executeSql(
+        queryValue,
+        [],
+        () => {
+          resolve();
+        },
+        () => {
+          resolve();
+        },
+      );
+    })
+  })
+}
 
-//     db = open();
-//     db.transaction(tx => {
-//       tx.executeSql(
-//         queryValue,
-//         [],
-//         () => {
-//           resolve();
-//         },
-//         () => {
-//           resolve();
-//         },
-//       );
-//     })
-//   })
-// }
+const removeKeywordLast = () => {
+  return new Promise((resolve, _) => {
+    const queryValue = `delete from historySearch where id in (
+      select id from historySearch order by timestamp limit 1
+    )`;
 
-// const getListKeyword = (keyword) => {
-//   let query = ''
-//   if (keyword == undefined || keyword.trim() == '') {
-//     query = `select * from historySearch order by timestamp limit 10`
-//   } else {
-//     let slugSearch = convertToSlug(keyword.trim().replace(/ +(?= )/g, ''))
-//     query = `select * from historySearch where slug like "%${slugSearch}%" order by timestamp limit 10`
-//   }
-//   return new Promise((resolve, _) => {
-//     db = open();
-//     db.transaction(tx => {
-//       tx.executeSql(
-//         query,
-//         [],
-//         (txTemp, results) => {
-//           let temp = [];
-//           if (results.rows.length > 0) {
-//             for (let i = 0; i < results.rows.length; ++i) {
-//               temp.push(results.rows.item(i));
-//             }
-//           }
-//           resolve(temp);
-//         },
-//         () => {
-//           resolve([]);
-//         },
-//       );
-//     })
-//   })
-// }
+    db = open();
+    db.transaction(tx => {
+      tx.executeSql(
+        queryValue,
+        [],
+        () => {
+          console.log('THANH CONG')
+          resolve();
+        },
+        (e) => {
+          console.log('THATTHTBI', e)
+          resolve();
+        },
+      );
+    })
+  })
+}
+
+const removeAllHitorySearch = async () => {
+  return new Promise((resolve, reject) => {
+    db.open();
+    db.transaction(tx => {
+      const query = `delete from historySearch`
+      tx.executeSql(
+        query,
+        [],
+        () => resolve(),
+        () => resolve()
+      )
+    })
+  })
+}
+
+const getListKeyword = (keyword) => {
+  let query = ''
+  if (keyword == undefined || keyword.trim() == '') {
+    query = `select * from historySearch order by timestamp desc limit 10`
+  } else {
+    let slugSearch = convertToSlug(keyword.trim().replace(/ +(?= )/g, ''))
+    query = `select * from historySearch where slug like "%${slugSearch}%" order by desc timestamp limit 10`
+  }
+  return new Promise((resolve, _) => {
+    db = open();
+    db.transaction(tx => {
+      tx.executeSql(
+        query,
+        [],
+        (txTemp, results) => {
+          let temp = [];
+          if (results.rows.length > 0) {
+            for (let i = 0; i < results.rows.length; ++i) {
+              temp.push(results.rows.item(i));
+            }
+          }
+          resolve(temp);
+        },
+        () => {
+          resolve([]);
+        },
+      );
+    })
+  })
+}
 
 export {
   open,
@@ -536,5 +551,8 @@ export {
 
   // tim kiem thong tin y te
   insertKeyword,
-  
+  getListKeyword,
+  removeKeyword,
+  removeKeywordLast,
+  removeAllHitorySearch
 };

@@ -8,7 +8,7 @@ import ResponseScreen from './ResponseScreen';
 import NetworkError from './NetworkErrorScreen';
 import NetInfo from '@react-native-community/netinfo';
 import ItemResponse from './component/ItemResponse';
-import { insertKeyword } from '../../../core/db/SqliteDb';
+import { getListKeyword, insertKeyword, removeKeywordLast, removeAllHitorySearch, removeKeyword } from '../../../core/db/SqliteDb';
 const arrayTest = [
     { id: 1, content: 'cách cài đặt bluezone' },
     { id: 2, content: 'cách cài đặt ứng dụng sức khoẻ bluezone khoẻ khoe khoe' },
@@ -30,6 +30,10 @@ const SearchScreen = (props) => {
     // useEffect
 
     useEffect(() => {
+        setupData()
+    }, [])
+
+    useEffect(() => {
         fillterKeyword()
     }, [text])
 
@@ -45,6 +49,17 @@ const SearchScreen = (props) => {
                 />
             </View>
         )
+    }
+
+    const setupData = async () => {
+        try {
+            // let k = await removeKeywordLast()
+            let listHistory = await getListKeyword('')
+
+            console.log('LISTTT', listHistory)
+        } catch (error) {
+
+        }
     }
 
     const renderHeader = () => {
@@ -128,7 +143,6 @@ const SearchScreen = (props) => {
     }
 
     const actionChangeText = (t) => {
-        console.log('TTTTT', t)
         setText(t)
     }
     const fillterKeyword = () => {
