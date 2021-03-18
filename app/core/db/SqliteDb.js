@@ -21,10 +21,12 @@
 
 'use strict';
 
-import {Platform} from 'react-native';
+import moment from 'moment';
+import { Platform } from 'react-native';
 import SQLite from 'react-native-sqlite-storage';
 
-import {dev} from '../apis/server';
+import { dev } from '../apis/server';
+import { convertToSlug } from '../utils/convertSlug';
 
 // TODO: Bo sung close db moi khi open:
 // https://www.djamware.com/post/5caec76380aca754f7a9d1f1/react-native-tutorial-sqlite-offline-androidios-mobile-app
@@ -52,8 +54,8 @@ const open = () => {
       database_version,
       database_displayname,
       database_size,
-      () => {},
-      () => {},
+      () => { },
+      () => { },
     );
   } else {
     db = SQLite.openDatabase({
@@ -76,11 +78,11 @@ const close = () => {
 
 const initDatabase = (success, failure) => {
   db = open();
-  db.transaction(function(txn) {
+  db.transaction(function (txn) {
     txn.executeSql(
       "SELECT name FROM sqlite_master WHERE type='table' AND name='notify'",
       [],
-      function(tx, res) {
+      function (tx, res) {
         if (res.rows.length === 0) {
           tx.executeSql('DROP TABLE IF EXISTS notify');
           tx.executeSql(
@@ -95,11 +97,23 @@ const initDatabase = (success, failure) => {
     txn.executeSql(
       "SELECT name FROM sqlite_master WHERE type='table' AND name='devLog'",
       [],
-      function(tx, res) {
+      function (tx, res) {
         if (res.rows.length === 0) {
           tx.executeSql('DROP TABLE IF EXISTS devLog');
           tx.executeSql(
             'CREATE TABLE IF NOT EXISTS devLog(id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp REAL, key TEXT, data TEXT)',
+          );
+        }
+      },
+    );
+    txn.executeSql(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='historySearch'",
+      [],
+      function (tx, res) {
+        if (res.rows.length === 0) {
+          tx.executeSql('DROP TABLE IF EXISTS historySearch');
+          tx.executeSql(
+            'CREATE TABLE IF NOT EXISTS historySearch(id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp REAL, keyword TEXT, slug TEXT)',
           );
         }
       },
@@ -109,7 +123,7 @@ const initDatabase = (success, failure) => {
 
 const replaceNotify = (notify, success, failure) => {
   db = open();
-  db.transaction(function(txn) {
+  db.transaction(function (txn) {
     txn.executeSql(
       'REPLACE INTO notify(notifyId, smallIcon, largeIcon, title, text, bigText, titleEn, textEn, bigTextEn, _group, timestamp, unRead, data) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
       [
@@ -135,7 +149,7 @@ const replaceNotify = (notify, success, failure) => {
 
 const mergeNotify = (notify, success, failure) => {
   db = open();
-  db.transaction(function(txn) {
+  db.transaction(function (txn) {
     txn.executeSql(
       `SELECT * FROM notify WHERE notifyId ="${notify.data.notifyId}"`,
       [],
@@ -168,7 +182,7 @@ const mergeNotify = (notify, success, failure) => {
 
 const readNotify = (notifyId, success, failure) => {
   db = open();
-  db.transaction(function(txn) {
+  db.transaction(function (txn) {
     txn.executeSql(
       'UPDATE notify SET unRead = ? WHERE notifyId = ?',
       [1, notifyId],
@@ -180,7 +194,7 @@ const readNotify = (notifyId, success, failure) => {
 
 const deleteNotify = (notifyId, success, failure) => {
   db = open();
-  db.transaction(function(txn) {
+  db.transaction(function (txn) {
     txn.executeSql(
       'DELETE FROM notify WHERE notifyId = ?',
       [notifyId],
@@ -233,7 +247,7 @@ const getCountNotification = (timestamp, callback) => {
 
 const addDevLog = log => {
   db = open();
-  db.transaction(function(txn) {
+  db.transaction(function (txn) {
     txn.executeSql('INSERT INTO devLog(timestamp, key, data ) VALUES (?,?,?)', [
       log.time || new Date().getTime(),
       log.key,
@@ -242,7 +256,7 @@ const addDevLog = log => {
   });
 };
 
-const getAllDevLog = (success = () => {}, failure = () => {}) => {
+const getAllDevLog = (success = () => { }, failure = () => { }) => {
   db = open();
   db.transaction(tx => {
     tx.executeSql(
@@ -266,8 +280,8 @@ const getAllDevLog = (success = () => {}, failure = () => {}) => {
 
 const getPartialDevLog = (
   timestamp,
-  success = () => {},
-  failure = () => {},
+  success = () => { },
+  failure = () => { },
   limit = 20,
 ) => {
   let SQL_QUERY = timestamp
@@ -370,6 +384,136 @@ const getCountBluezoneByDays = (timestamp, success, failure) => {
     );
   });
 };
+
+const insertKeyword = (keyword) => {
+  if (!keyword) {
+    return
+  }
+  let keyword = keyword.trim().replace(/ +(?= )/g, '');
+  if (keyword == '') {
+    return
+  }
+
+  return new Promise((resolve, reject) => {
+    let slug = convertToSlug(keyword)
+    let currentTime = moment().unix()
+
+    const queryValue = `
+    insert or replace into historySearch (id, timestamp, keyword, slug) values (
+      (select id from historySearch where slug = "${slug}"),
+        ${currentTime},
+       "${keyword}",
+       "${slug}"`;
+
+    const queryGetNumberRow = `select count(*) from historySearch`
+
+    db = open();
+    db.transaction(tx => {
+      tx.executeSql(
+        queryGetNumberRow,
+        [],
+        (txTemp, results) => {
+          var len = results.rows.length
+          if (len > 0) {
+            if (results.rows.item(0) >= 500) {
+              removeKeywordLast()
+                .then(() => {
+                  txTemp.executeSql(
+                    queryValue,
+                    [],
+                    (_, _) => resolve(),
+                    () => resolve()
+                  )
+                }).catch(() => {
+                  txTemp.executeSql(
+                    queryValue,
+                    [],
+                    (_, _) => resolve(),
+                    () => resolve()
+                  )
+                })
+            }
+          }
+          resolve();
+        },
+        () => {
+          resolve();
+        },
+      );
+    })
+  })
+};
+
+const removeKeyword = (id) => {
+  return new Promise((resolve, _) => {
+    const queryValue = `delete from historySearch where id = ${id}`;
+
+    db = open();
+    db.transaction(tx => {
+      tx.executeSql(
+        queryValue,
+        [],
+        (_, _) => {
+          resolve();
+        },
+        () => {
+          resolve();
+        },
+      );
+    })
+  })
+}
+
+const removeKeywordLast = () => {
+  return new Promise((resolve, _) => {
+    const queryValue = `delete from historySearch order by timestamp limit 1`;
+
+    db = open();
+    db.transaction(tx => {
+      tx.executeSql(
+        queryValue,
+        [],
+        (_, _) => {
+          resolve();
+        },
+        () => {
+          resolve();
+        },
+      );
+    })
+  })
+}
+
+const getListKeyword = (keyword) => {
+  let query = ''
+  if (keyword == undefined || keyword.trim() == '') {
+    query = `select * from historySearch order by timestamp limit 10`
+  } else {
+    let slugSearch = convertToSlug(keyword.trim().replace(/ +(?= )/g, ''))
+    query = `select * from historySearch where slug like "%${slugSearch}%" order by timestamp limit 10`
+  }
+  return new Promise((resolve, _) => {
+    db = open();
+    db.transaction(tx => {
+      tx.executeSql(
+        query,
+        [],
+        (txTemp, results) => {
+          let temp = [];
+          if (results.rows.length > 0) {
+            for (let i = 0; i < results.rows.length; ++i) {
+              temp.push(results.rows.item(i));
+            }
+          }
+          resolve(temp);
+        },
+        () => {
+          resolve([]);
+        },
+      );
+    })
+  })
+}
 
 export {
   open,
