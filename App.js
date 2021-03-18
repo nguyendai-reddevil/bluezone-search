@@ -102,6 +102,8 @@ import {
   removeDeliveredNotification,
 } from './app/core/fcm';
 import {getIsFirstLoading, setIsFirstLoading} from './app/core/storage';
+import SearchScreen from './app/main/components/SearchScreen/SearchScreen';
+import NetworkError from './app/main/components/SearchScreen/NetworkErrorScreen';
 
 // Components
 const HomeScreen = decorateMainAppStart(Home);
@@ -375,11 +377,19 @@ class App extends React.Component {
                 id="Welcome"
                 headerMode="none"
                 mode="card"
-                initialRouteName={WELCOME_INITIAL_ROUTE}>
-                <Stack.Screen
+                initialRouteName={'SearchScreen'}>
+                {/* <Stack.Screen
                   name={WELCOME_INITIAL_ROUTE}
                   component={this.WelcomeProps}
-                />
+                /> */}
+                <Stack.Screen
+                name= {'SearchScreen'}  
+                component={SearchScreen}
+                /> 
+                <Stack.Screen
+                name= {'NetworkError'}  
+                component={NetworkError}
+                /> 
               </Stack.Navigator>
             ) : (
               <Stack.Navigator

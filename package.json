@@ -28,6 +28,7 @@
     "@react-native-community/checkbox": "^0.4.2",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "^0.1.7",
+    "@react-native-community/netinfo": "^6.0.0",
     "@react-native-community/push-notification-ios": "^1.1.1",
     "@react-navigation/bottom-tabs": "^5.2.7",
     "@react-navigation/compat": "^5.1.14",
@@ -67,7 +68,7 @@
     "react-native-system-setting": "^1.7.4",
     "react-native-tab-view": "^2.15.0",
     "react-native-vector-icons": "6.6.0",
-    "react-native-webview": "^9.2.1",
+    "react-native-webview": "^11.3.1",
     "react-timer-mixin": "^0.13.4",
     "rn-fetch-blob": "^0.12.0"
   },
