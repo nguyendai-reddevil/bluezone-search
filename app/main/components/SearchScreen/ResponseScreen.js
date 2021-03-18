@@ -1,6 +1,7 @@
 import React,{ memo, useEffect, useState,useMemo } from 'react';
 import { View,Text,TextInput,Image, Keyboard, RefreshControl,ActivityIndicator } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 import { MSCALE } from './Reponsive';
 import ItemSearch from './component/ItemKeyword';
 import NetworkError from './NetworkErrorScreen';
@@ -57,45 +58,42 @@ const dataTest = [
                 img:'https://cdn.24h.com.vn/upload/1-2021/images/2021-03-09/Nu-than-tuong-co-vong-1-cnph4caxzz8ukoxcsj1iesgpc-1615277518-965-width800height1421.jpg'
                 },
 ]
-const SearchScreen = () => {
+const SearchScreen = (props) => {
+    const navigation = useNavigation()
+    console.log('propspropsprops',props)
     const [text,setText] = useState('')
     const [isNetwork,setIsNetwork] = useState(true)
-    const [arrayResponse,setArrayResponse] = useState([])
     const [refresh,setRefresh] = useState(false)
     const [loadmore,setLoadmore] = useState(false)
+    const [arrayResponse,setArrayResponse] = useState([])
     // useEffect
     useEffect(() => {
         checkWifi()
-        setArrayKey(arrayTest)
     },[])
     useEffect(() => {
-        fillterKeyword()
+        const keySearch = props?.route?.params?.key
+        setText(keySearch)
+        actionSearch()
     },[text])
+    
 
     // function render
-    const renderDetal = () => {
-        return(
-            <View style={{flex:1}}>
-                <FlatList
-                    style={{marginLeft:MSCALE(57)}}
-                    data={arrayKey}
-                    keyExtractor={(item,index) => `key_${index}`}
-                    renderItem={(item) => <ItemSearch item={item.item}/>}
-                />
-            </View>
-        )
-    }
 
     const renderHeader = () => {
         return(
-            <View style={{flexDirection:'row',marginTop:MSCALE(56),marginBottom:showResponse ? MSCALE(10) : MSCALE(0)}}>
+            <View style={{flexDirection:'row',marginTop:MSCALE(56),marginBottom:MSCALE(10)}}>
+                <TouchableOpacity style={{marginLeft:MSCALE(15),alignItems:'center'}}
+                onPress={() => navigation.goBack()}
+                >
                 <Image
                     width={MSCALE(24)}
                     height={MSCALE(24)}
                     resizeMode={'contain'}
                     source={require('./asset/back.png')}
-                    style={{width:MSCALE(24),height:MSCALE(24),marginLeft:MSCALE(15),alignSelf:'center'}}
+                    style={{width:MSCALE(24),height:MSCALE(24)}}
                     />
+                </TouchableOpacity>
+               
                     <View  style={{
                             flexDirection:'row',
                             width:MSCALE(343),
@@ -116,7 +114,7 @@ const SearchScreen = () => {
                         onSubmitEditing={actionSearch}
                         returnKeyType={'search'}
                         onChangeText={t => actionChangeText(t)}
-                        onFocus={() => setShowResponse(false)}
+                        onFocus={() => navigation.push('SearchScreen',{key:text})}
                         value={text}
                         style={{width:MSCALE(221),height:MSCALE(22),alignSelf:'center',marginLeft:MSCALE(7)}}
                         placeholder={'Tra cứu bệnh nhân,tin tức y tế...'}
@@ -153,27 +151,10 @@ const SearchScreen = () => {
                 data={data}
                 keyExtractor={(item,index) => `response_${item.id}`}
                 renderItem={item => <ItemResponse item={item.item}/>}
-                ListFooterComponent={renderIndicatorLoadingMore}
-                onEndReachedThreshold={0.01}
-                onEndReached={handleLoadMore}
                 />
             </View>
         )
     }
-    const renderIndicatorLoadingMore = useMemo(() => {
-        if (loadmore) {
-
-            return (
-                <View style={{   
-                    height: MSCALE(50),
-                    alignItems: 'center',
-                    paddingTop: MSCALE(8)}}>
-                    <ActivityIndicator color={'grey'} />
-                </View>
-            )
-        }
-        return <View style={{ height: MSCALE(30) }} />
-    },[loadmore])
 
     // function handling
 
@@ -188,30 +169,18 @@ const SearchScreen = () => {
     }
     const actionClear = () => {
         setText('')
+       navigation.push('SearchScreen',{key:' '})
     }
     const actionSearch = () => {
         setRefresh(false)
-        setLoadmore(false)
-        setShowResponse(true)
         setArrayResponse(dataTest)
     }
     const actionChangeText = (t) => {
         setText(t)
     }
-    const fillterKeyword = () => {
-        let dataNew = arrayTest.filter(item => {
-           let textUp = text.toUpperCase()
-           let keyword = item.content.toUpperCase()
-           return keyword.includes(textUp)
-        })
-       setArrayKey(dataNew)
-    }
+
     const handleRefesh = () => {
         setRefresh(true)
-        actionSearch()
-    }
-    const handleLoadMore = () => {
-        setLoadmore(true)
         actionSearch()
     }
    
@@ -223,4 +192,4 @@ const SearchScreen = () => {
         </View>
     )
 }
-export default  memo(SearchScreen)
+export default  SearchScreen

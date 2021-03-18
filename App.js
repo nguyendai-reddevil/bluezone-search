@@ -104,7 +104,7 @@ import {
 import {getIsFirstLoading, setIsFirstLoading} from './app/core/storage';
 import SearchScreen from './app/main/components/SearchScreen/SearchScreen';
 import NetworkError from './app/main/components/SearchScreen/NetworkErrorScreen';
-
+import ResponseScreen from './app/main/components/SearchScreen/ResponseScreen';
 // Components
 const HomeScreen = decorateMainAppStart(Home);
 const Stack = createStackNavigator();
@@ -386,6 +386,10 @@ class App extends React.Component {
                 name= {'SearchScreen'}  
                 component={SearchScreen}
                 /> 
+                <Stack.Screen
+                name={'ResponseScreen'} 
+                component={ResponseScreen}
+                />
                 <Stack.Screen
                 name= {'NetworkError'}  
                 component={NetworkError}
