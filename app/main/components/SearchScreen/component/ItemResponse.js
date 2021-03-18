@@ -1,15 +1,20 @@
 import React, { memo } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet,TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { MSCALE } from '../Reponsive';
 const host = 'https://www.google.com/s2/favicons?sz=128&domain='
 const ItemResponse = ({ item }) => {
+
+    const navigation = useNavigation()
     console.log('ITMEMEMEM', item)
     const indexCut = item?.url?.indexOf('/')
     console.log('indexCutindexCutindexCutindexCutindexCut',indexCut)
     const domain = item?.url?.slice(indexCut+2)
     const iconWeb = host + domain
     return (
-        <View style={styles.container} >
+        <TouchableOpacity 
+        onPress={() => navigation.push('DetailScreen',{url:item?.url})}
+        style={styles.container} >
             <View style={{flexDirection:'row',marginTop:MSCALE(15),alignItems:'center'}}>
             <Image
             source={{uri:iconWeb}}
@@ -34,7 +39,7 @@ const ItemResponse = ({ item }) => {
                     style={styles.img_thumb}
                 />}
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 const styles = StyleSheet.create({

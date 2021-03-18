@@ -1,12 +1,14 @@
 import React,{ memo } from 'react';
+import {useNavigation} from '@react-navigation/native';
 import { View,Text,Image,TouchableOpacity } from 'react-native';
 import {MSCALE} from '../Reponsive';
 
 const ItemSearch = ({item,onPress}) => {
+    const navigation = useNavigation()
     console.log('itetmemtemtmetetmemtmemte',item)
     return(
         <TouchableOpacity 
-        onPress={onPress}
+        onPress={() => navigation.push('ResponseScreen',{key: item.content})}
         style={{flexDirection:'row',
         alignItems:'center',
         borderBottomColor:'#E0E0E0',

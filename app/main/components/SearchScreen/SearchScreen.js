@@ -45,7 +45,7 @@ const SearchScreen = (props) => {
                     style={{ marginLeft: MSCALE(57) }}
                     data={arrayKey}
                     keyExtractor={(item, index) => `key_${index}`}
-                    renderItem={(item) => <ItemSearch item={item.item} onPress={chooseItem} />}
+                    renderItem={(item) => <ItemSearch item={item.item} />}
                 />
             </View>
         )
@@ -134,9 +134,7 @@ const SearchScreen = (props) => {
     const actionClear = () => {
         setText('')
     }
-    const chooseItem = (t) => {
-        console.log('teteteetextetetete',t)
-    }
+
     const actionSearch = () => {
        text != '' && navigation.push('ResponseScreen',{key:text})
         // setArrayResponse(dataTest)
