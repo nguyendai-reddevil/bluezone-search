@@ -1,5 +1,5 @@
-import React,{ memo, useEffect, useState,useMemo } from 'react';
-import { View,Text,TextInput,Image, Keyboard, RefreshControl,ActivityIndicator } from 'react-native';
+import React, { memo, useEffect, useState, useMemo } from 'react';
+import { View, Text, TextInput, Image, Keyboard, RefreshControl, ActivityIndicator, Platform } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { MSCALE } from './Reponsive';
 import { useNavigation } from '@react-navigation/native';
@@ -8,15 +8,16 @@ import ResponseScreen from './ResponseScreen';
 import NetworkError from './NetworkErrorScreen';
 import NetInfo from '@react-native-community/netinfo';
 import ItemResponse from './component/ItemResponse';
+import { insertKeyword } from '../../../core/db/SqliteDb';
 const arrayTest = [
-    {id:1,content:'cách cài đặt bluezone'},
-    {id:2,content:'cách cài đặt ứng dụng sức khoẻ bluezone khoẻ khoe khoe'},
-    {id:3,content:'24h'},
-    {id:4,content:'tin tức 48h qua'},
-    {id:5,content:'cách sử dụng bluezone'},
-    {id:6,content:'làm sao sử dụng bluezone'},
-    {id:7,content:'tác dụng của bluezone'},
-    {id:8,content:'số người cài đặt bluezone'}
+    { id: 1, content: 'cách cài đặt bluezone' },
+    { id: 2, content: 'cách cài đặt ứng dụng sức khoẻ bluezone khoẻ khoe khoe' },
+    { id: 3, content: '24h' },
+    { id: 4, content: 'tin tức 48h qua' },
+    { id: 5, content: 'cách sử dụng bluezone' },
+    { id: 6, content: 'làm sao sử dụng bluezone' },
+    { id: 7, content: 'tác dụng của bluezone' },
+    { id: 8, content: 'số người cài đặt bluezone' }
 ]
 
 const SearchScreen = (props) => {
@@ -30,17 +31,17 @@ const SearchScreen = (props) => {
 
     useEffect(() => {
         fillterKeyword()
-    },[text])
+    }, [text])
 
     // function render
     const renderDetal = () => {
-        return(
-            <View style={{flex:1}}>
+        return (
+            <View style={{ flex: 1 }}>
                 <FlatList
-                    style={{marginLeft:MSCALE(57)}}
+                    style={{ marginLeft: MSCALE(57) }}
                     data={arrayKey}
-                    keyExtractor={(item,index) => `key_${index}`}
-                    renderItem={(item) => <ItemSearch item={item.item}/>}
+                    keyExtractor={(item, index) => `key_${index}`}
+                    renderItem={(item) => <ItemSearch item={item.item} onPress={chooseItem} />}
                 />
             </View>
         )
@@ -48,7 +49,7 @@ const SearchScreen = (props) => {
 
     const renderHeader = () => {
         return(
-            <View style={{flexDirection:'row',marginTop:MSCALE(56)}}>
+            <View style={{flexDirection:'row',marginTop:MSCALE(56),alignItems:'center'}}>
                 <TouchableOpacity
                 onPress={() => navigation.goBack()}
                 >
@@ -57,7 +58,7 @@ const SearchScreen = (props) => {
                     height={MSCALE(24)}
                     resizeMode={'contain'}
                     source={require('./asset/back.png')}
-                    style={{width:MSCALE(24),height:MSCALE(24),marginLeft:MSCALE(15),alignSelf:'center'}}
+                    style={{width:MSCALE(24),height:MSCALE(24),marginLeft:MSCALE(15)}}
                     />
                 </TouchableOpacity>
                
@@ -75,7 +76,7 @@ const SearchScreen = (props) => {
                         height={MSCALE(22)}
                         resizeMode={'contain'}
                         source={require('./asset/search.png')}
-                        style={{width:MSCALE(24),height:MSCALE(22),alignSelf:'center',marginLeft:MSCALE(11)}}
+                        style={{ width: MSCALE(24), height: MSCALE(22), alignSelf: 'center', marginLeft: MSCALE(11) }}
                     />
                     <TextInput
                         onSubmitEditing={actionSearch}
@@ -83,25 +84,32 @@ const SearchScreen = (props) => {
                         onChangeText={t => actionChangeText(t)}
                         autoFocus={text ? true : false}
                         value={text}
-                        style={{width:MSCALE(221),height:MSCALE(22),alignSelf:'center',marginLeft:MSCALE(7)}}
-                        placeholder={'Tra cứu bệnh nhân,tin tức y tế...'}
+                        style={{
+                            width: MSCALE(220),
+                            flex:1,
+                            height: MSCALE(Platform.OS == 'ios' ? MSCALE(22) : MSCALE(80)),
+                            alignSelf: 'center',
+                            color: '#000',
+                            marginLeft: MSCALE(7),
+                        }}
+                        placeholder={'Tra cứu bệnh nhân,tin tức y tế ...'}
                     />
-                    <TouchableOpacity 
-                    onPress={actionClear}
-                    style={{alignItems:'flex-end',width:MSCALE(20),height:MSCALE(36),justifyContent:'center',marginLeft:MSCALE(49)}}>
-                    <Image
-                        width={MSCALE(14)}
-                        height={MSCALE(14)}
-                        resizeMode={'contain'}
-                        source={require('./asset/cancel.png')}
-                        style={{width:MSCALE(14),height:MSCALE(14),marginLeft:MSCALE(57)}}
-                    />
-                    {/* <Text style={{alignSelf:'center'}}>abc</Text> */}
+                    <TouchableOpacity
+                        onPress={actionClear}
+                        style={{ alignItems: 'flex-end', width: MSCALE(20), height: MSCALE(36), justifyContent: 'center',marginRight:MSCALE(20) }}>
+                        <Image
+                            width={MSCALE(14)}
+                            height={MSCALE(14)}
+                            resizeMode={'contain'}
+                            source={require('./asset/cancel.png')}
+                            style={{ width: MSCALE(14), height: MSCALE(14)}}
+                        />
+                        {/* <Text style={{alignSelf:'center'}}>abc</Text> */}
                     </TouchableOpacity>
-                    
-                    </View>
+
+                </View>
             </View>
-           
+
         )
     }
 
@@ -111,20 +119,25 @@ const SearchScreen = (props) => {
     const actionClear = () => {
         setText('')
     }
+    const chooseItem = (t) => {
+        console.log('teteteetextetetete',t)
+    }
     const actionSearch = () => {
-        navigation.push('ResponseScreen',{key:text})
+       text != '' && navigation.push('ResponseScreen',{key:text})
         // setArrayResponse(dataTest)
     }
+
     const actionChangeText = (t) => {
+        console.log('TTTTT', t)
         setText(t)
     }
     const fillterKeyword = () => {
         let dataNew = arrayTest.filter(item => {
-           let textUp = text.toUpperCase()
-           let keyword = item.content.toUpperCase()
-           return keyword.includes(textUp)
+            let textUp = text?.toUpperCase()
+            let keyword = item?.content?.toUpperCase()
+            return keyword.includes(textUp)
         })
-       setArrayKey(dataNew)
+        setArrayKey(dataNew)
     }
 
    
@@ -136,4 +149,4 @@ const SearchScreen = (props) => {
         </View>
     )
 }
-export default  memo(SearchScreen)
+export default memo(SearchScreen)

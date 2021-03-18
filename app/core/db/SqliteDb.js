@@ -385,67 +385,70 @@ const getCountBluezoneByDays = (timestamp, success, failure) => {
   });
 };
 
-// const insertKeyword = (keyword) => {
-//   if (!keyword) {
-//     return
-//   }
-//   let keyword = keyword.trim().replace(/ +(?= )/g, '');
-//   if (keyword == '') {
-//     return
-//   }
+const insertKeyword = (keyword) => {
+  if (!keyword) {
+    return
+  }
+  keyword = keyword.trim().replace(/ +(?= )/g, '');
+  if (keyword == '') {
+    return
+  }
 
-//   return new Promise((resolve, reject) => {
-//     let slug = convertToSlug(keyword)
-//     let currentTime = moment().unix()
+  return new Promise((resolve, reject) => {
+    let slug = convertToSlug(keyword)
+    let currentTime = moment().unix()
 
-//     const queryValue = `
-//     insert or replace into historySearch (id, timestamp, keyword, slug) values (
-//       (select id from historySearch where slug = "${slug}"),
-//         ${currentTime},
-//        "${keyword}",
-//        "${slug}"`;
+    console.log('KLLUUUUUU', slug, keyword, currentTime)
 
-//     const queryGetNumberRow = `select count(*) from historySearch`
+    const queryValue = `
+    insert or replace into historySearch (id, timestamp, keyword, slug) values (
+      (select id from historySearch where slug = "${slug}"),
+        ${currentTime},
+       "${keyword}",
+       "${slug}"`;
 
-//     db = open();
-//     db.transaction(tx => {
-//       tx.executeSql(
-//         queryGetNumberRow,
-//         [],
-//         (txTemp, results) => {
-//           var len = results.rows.length
-//           if (len > 0) {
-//             if (results.rows.item(0) >= 500) {
-//               removeKeywordLast()
-//                 .then(() => {
-//                   txTemp.executeSql(
-//                     queryValue,
-//                     [],
-//                     (_, _) => resolve(),
-//                     () => resolve()
-//                   )
-//                 }).catch(() => {
-//                   txTemp.executeSql(
-//                     queryValue,
-//                     [],
-//                     (_, _) => resolve(),
-//                     () => resolve()
-//                   )
-//                 })
-//             }
-//           }
-//           resolve();
-//         },
-//         () => {
-//           resolve();
-//         },
-//       );
-//     })
-//   })
-// };
+    const queryGetNumberRow = `select count(*) from historySearch`
+
+    db = open();
+    db.transaction(tx => {
+      tx.executeSql(
+        queryGetNumberRow,
+        [],
+        (txTemp, results) => {
+          var len = results.rows.length
+          console.log('GIAT TRIIRIIR', results.rows, results.rows.item(0))
+          if (len > 0) {
+            if (results.rows.item(0) >= 500) {
+              // removeKeywordLast()
+              //   .then(() => {
+              //     txTemp.executeSql(
+              //       queryValue,
+              //       [],
+              //       () => resolve(),
+              //       () => resolve()
+              //     )
+              //   }).catch(() => {
+              //     txTemp.executeSql(
+              //       queryValue,
+              //       [],
+              //       () => resolve(),
+              //       () => resolve()
+              //     )
+              //   })
+            }
+          }
+          resolve();
+        },
+        () => {
+          resolve();
+        },
+      );
+    })
+  })
+};
 
 // const removeKeyword = (id) => {
-//   return new Promise((resolve, _) => {
+//   return new Promise((resolve, reject) => {
 //     const queryValue = `delete from historySearch where id = ${id}`;
 
 //     db = open();
@@ -453,7 +456,7 @@ const getCountBluezoneByDays = (timestamp, success, failure) => {
 //       tx.executeSql(
 //         queryValue,
 //         [],
-//         (_, _) => {
+//         () => {
 //           resolve();
 //         },
 //         () => {
@@ -473,7 +476,7 @@ const getCountBluezoneByDays = (timestamp, success, failure) => {
 //       tx.executeSql(
 //         queryValue,
 //         [],
-//         (_, _) => {
+//         () => {
 //           resolve();
 //         },
 //         () => {
@@ -530,4 +533,8 @@ export {
   getAllDevLog,
   clearDevLog,
   getCountBluezoneByDays,
+
+  // tim kiem thong tin y te
+  insertKeyword,
+  
 };

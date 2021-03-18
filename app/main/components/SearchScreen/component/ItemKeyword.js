@@ -2,10 +2,12 @@ import React,{ memo } from 'react';
 import { View,Text,Image,TouchableOpacity } from 'react-native';
 import {MSCALE} from '../Reponsive';
 
-const ItemSearch = ({item}) => {
+const ItemSearch = ({item,onPress}) => {
     console.log('itetmemtemtmetetmemtmemte',item)
     return(
-        <TouchableOpacity style={{flexDirection:'row',
+        <TouchableOpacity 
+        onPress={onPress}
+        style={{flexDirection:'row',
         alignItems:'center',
         borderBottomColor:'#E0E0E0',
         height:MSCALE(71),borderBottomWidth:1}}>

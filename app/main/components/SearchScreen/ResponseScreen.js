@@ -81,9 +81,9 @@ const SearchScreen = (props) => {
 
     const renderHeader = () => {
         return(
-            <View style={{flexDirection:'row',marginTop:MSCALE(56),marginBottom:MSCALE(10)}}>
-                <TouchableOpacity style={{marginLeft:MSCALE(15),alignItems:'center'}}
-                onPress={() => navigation.goBack()}
+            <View style={{flexDirection:'row',marginTop:MSCALE(56),marginBottom:MSCALE(10),alignItems:'center'}}>
+                <TouchableOpacity style={{marginLeft:MSCALE(15)}}
+                    onPress={() => navigation.goBack()}
                 >
                 <Image
                     width={MSCALE(24)}
@@ -169,7 +169,7 @@ const SearchScreen = (props) => {
     }
     const actionClear = () => {
         setText('')
-       navigation.push('SearchScreen',{key:' '})
+        navigation.push('SearchScreen',{key:''})
     }
     const actionSearch = () => {
         setRefresh(false)
