@@ -125,6 +125,7 @@ const checkUpdate = (currentVersion, latestVersion, rangeVersion = []) => {
  * @returns {*}
  */
 const getVersionValue = version => {
+  return
   let hasSuffixes;
   let suffixes;
   if (version.endsWith('-deploygate')) {
