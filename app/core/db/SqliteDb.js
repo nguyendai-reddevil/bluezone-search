@@ -466,7 +466,7 @@ const removeKeyword = (id) => {
 
 const removeKeywordLast = () => {
   return new Promise((resolve, _) => {
-    const queryValue = `delete from historySearch order by timestamp limit 1`;
+    const queryValue = `delete from historySearch order by timestamp desc limit 1`;
 
     db = open();
     db.transaction(tx => {
