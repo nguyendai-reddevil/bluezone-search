@@ -19,20 +19,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
+// 'use strict';
 
-import {dev} from '../apis/server';
+// import {dev} from '../apis/server';
 
-const orig = global.console.log;
+// const orig = global.console.log;
 
-global.console.log = function log() {
-  if (dev) {
-    orig.apply(global.console, [
-      `[${new Date()
-        .toISOString()
-        .replace('T', ' ')
-        .replace(/\..+/, '')}]`,
-      ...arguments,
-    ]);
-  }
-};
+// global.console.log = function log() {
+//   if (dev) {
+//     orig.apply(global.console, [
+//       `[${new Date()
+//         .toISOString()
+//         .replace('T', ' ')
+//         .replace(/\..+/, '')}]`,
+//       ...arguments,
+//     ]);
+//   }
+// };

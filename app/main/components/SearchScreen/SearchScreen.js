@@ -7,7 +7,7 @@ import ResponseScreen from './ResponseScreen';
 import NetworkError from './NetworkErrorScreen';
 import NetInfo from '@react-native-community/netinfo';
 import ItemResponse from './component/ItemResponse';
-import { insertKeyword } from '../../../core/db/SqliteDb';
+import { getListKeyword, insertKeyword, removeKeywordLast, removeAllHitorySearch, removeKeyword } from '../../../core/db/SqliteDb';
 const arrayTest = [
     { id: 1, content: 'cách cài đặt bluezone' },
     { id: 2, content: 'cách cài đặt ứng dụng sức khoẻ bluezone khoẻ khoe khoe' },
@@ -69,8 +69,6 @@ const dataTest = [
     },
 ]
 const SearchScreen = () => {
-console.log('dhjasjkdhajkdhjkas')
-
     const [text, setText] = useState('')
     const [arrayKey, setArrayKey] = useState([])
     const [isNetwork, setIsNetwork] = useState(true)
@@ -83,6 +81,10 @@ console.log('dhjasjkdhajkdhjkas')
     useEffect(() => {
         checkWifi()
         setArrayKey(arrayTest)
+    }, [])
+
+    useEffect(() => {
+        setupData()
     }, [])
 
     useEffect(() => {
@@ -103,6 +105,17 @@ console.log('dhjasjkdhajkdhjkas')
         )
     }
 
+    const setupData = async () => {
+        try {
+            // let k = await removeKeywordLast()
+            let listHistory = await getListKeyword('')
+
+            console.log('LISTTT', listHistory)
+        } catch (error) {
+
+        }
+    }
+
     const renderHeader = () => {
         return (
             <View style={{
@@ -119,12 +132,13 @@ console.log('dhjasjkdhajkdhjkas')
                 <View style={{
                     flexDirection: 'row',
                     width: MSCALE(343),
-                    height: MSCALE(36),
+                    // height: MSCALE(36),
                     borderRadius: MSCALE(10),
                     marginLeft: MSCALE(20),
                     // marginRight: MSCALE(12),
                     // top: calc(50% - 36px/2);
                     backgroundColor: '#efeff0',
+                    alignItems: 'center'
                 }}>
                     <Image
                         width={MSCALE(24)}
@@ -141,8 +155,9 @@ console.log('dhjasjkdhajkdhjkas')
                         onSubmitEditing={actionSearch}
                         value={text}
                         style={{
+                            lineHeight: MSCALE(36),
                             width: MSCALE(221),
-                            height: MSCALE(22),
+                            height: MSCALE(36),
                             alignSelf: 'center',
                             color: '#000',
                             marginLeft: MSCALE(7),
@@ -219,8 +234,6 @@ console.log('dhjasjkdhajkdhjkas')
         setText('')
     }
     const actionSearch = () => {
-        console.log('BAT DAU SEWACGH')
-
         // setRefresh(false)
         // setLoadmore(false)
         // setShowResponse(true)
@@ -234,7 +247,6 @@ console.log('dhjasjkdhajkdhjkas')
     }
 
     const actionChangeText = (t) => {
-        console.log('TTTTT', t)
         setText(t)
     }
     const fillterKeyword = () => {
