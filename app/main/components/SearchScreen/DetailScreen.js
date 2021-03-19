@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import FastImage from 'react-native-fast-image';
 
+import psl from 'psl'
+
 const DetailScreen = (props) => {
 
     const navigation = useNavigation()
@@ -52,7 +54,7 @@ const DetailScreen = (props) => {
                         textAlign: 'center',
                         fontWeight: '500',
                         fontSize: MSCALE(18)
-                    }}>bluezone.com.vn</Text>
+                    }}>Bài viêt</Text>
                 </View>
                 <View style={{ width: MSCALE(24) }} />
                 {/* <View  style={{
