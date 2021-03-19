@@ -41,6 +41,7 @@
     "lottie-react-native": "^3.5.0",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
+    "psl": "^1.8.0",
     "react": "16.11.0",
     "react-intl": "^2.7.1",
     "react-native": "0.62.2",

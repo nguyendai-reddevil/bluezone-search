@@ -1,13 +1,9 @@
-import React, { memo, useEffect, useState, useMemo } from 'react';
-import { View, Text, TextInput, Image, Keyboard, RefreshControl, ActivityIndicator, Platform, StyleSheet } from 'react-native';
+import React, { memo, useEffect, useState, } from 'react';
+import { View, TextInput, Image, Platform, StyleSheet } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { MSCALE } from './Reponsive';
 import { useNavigation } from '@react-navigation/native';
 import ItemSearch from './component/ItemKeyword';
-import ResponseScreen from './ResponseScreen';
-import NetworkError from './NetworkErrorScreen';
-import NetInfo from '@react-native-community/netinfo';
-import ItemResponse from './component/ItemResponse';
 import { getListKeyword, insertKeyword, } from '../../../core/db/SqliteDb';
 
 const SearchScreen = ({textSearch,popup,closePopup}) => {
