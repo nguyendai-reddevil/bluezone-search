@@ -9,24 +9,14 @@ import NetworkError from './NetworkErrorScreen';
 import NetInfo from '@react-native-community/netinfo';
 import ItemResponse from './component/ItemResponse';
 import { getListKeyword, insertKeyword, removeKeywordLast, removeAllHitorySearch, removeKeyword } from '../../../core/db/SqliteDb';
-const arrayTest = [
-    { id: 1, content: 'cách cài đặt bluezone' },
-    { id: 2, content: 'cách cài đặt ứng dụng sức khoẻ bluezone khoẻ khoe khoe' },
-    { id: 3, content: '24h' },
-    { id: 4, content: 'tin tức 48h qua' },
-    { id: 5, content: 'cách sử dụng bluezone' },
-    { id: 6, content: 'làm sao sử dụng bluezone' },
-    { id: 7, content: 'tác dụng của bluezone' },
-    { id: 8, content: 'số người cài đặt bluezone' }
-]
 
 const SearchScreen = (props) => {
 
     const navigation = useNavigation()
     const keySearch = props?.route?.params?.key
-    const [text,setText] = useState( keySearch || '')
-    const [arrayKey,setArrayKey] = useState([])
-    const [refresh,setRefresh] = useState(false)
+    const [text, setText] = useState(keySearch || '')
+    const [arrayKey, setArrayKey] = useState([])
+    const [refresh, setRefresh] = useState(false)
     // useEffect
 
     useEffect(() => {
@@ -45,7 +35,10 @@ const SearchScreen = (props) => {
                     style={{ marginLeft: MSCALE(57) }}
                     data={arrayKey}
                     keyExtractor={(item, index) => `key_${index}`}
-                    renderItem={(item) => <ItemSearch item={item.item} />}
+                    renderItem={(item) =>
+                        <ItemSearch
+                            item={item.item}
+                            onPress={chooseItem} />}
                 />
             </View>
         )
@@ -53,40 +46,39 @@ const SearchScreen = (props) => {
 
     const setupData = async () => {
         try {
-            // let k = await removeKeywordLast()
-            let listHistory = await getListKeyword('')
-
-            console.log('LISTTT', listHistory)
+            let listHistory = await getListKeyword(text)
+            setArrayKey(listHistory)
         } catch (error) {
-
+            console.log('Setup list data serach error', error)
         }
     }
 
     const renderHeader = () => {
-        return(
-            <View style={{flexDirection:'row',marginTop:MSCALE(56),alignItems:'center'}}>
+        return (
+            <View style={{ flexDirection: 'row', marginTop: MSCALE(56), alignItems: 'center' }}>
                 <TouchableOpacity
-                onPress={() => navigation.goBack()}
+                    onPress={() => navigation.goBack()}
                 >
-                <Image
-                    width={MSCALE(24)}
-                    height={MSCALE(24)}
-                    resizeMode={'contain'}
-                    source={require('./asset/back.png')}
-                    style={{width:MSCALE(24),height:MSCALE(24),marginLeft:MSCALE(15)}}
+                    <Image
+                        width={MSCALE(24)}
+                        height={MSCALE(24)}
+                        resizeMode={'contain'}
+                        source={require('./asset/back.png')}
+                        style={{ width: MSCALE(24), height: MSCALE(24), marginLeft: MSCALE(15) }}
                     />
                 </TouchableOpacity>
-               
-                    <View  style={{
-                            flexDirection:'row',
-                            width:MSCALE(343),
-                            height:MSCALE(36),
-                            borderRadius:MSCALE(10),
-                            marginLeft: MSCALE(20),
-                            // marginRight: MSCALE(12),
-                            // top: calc(50% - 36px/2);
-                            backgroundColor:'rgba(118, 118, 128, 0.12)'}}>
-                                <Image
+
+                <View style={{
+                    flexDirection: 'row',
+                    width: MSCALE(343),
+                    height: MSCALE(36),
+                    borderRadius: MSCALE(10),
+                    marginLeft: MSCALE(20),
+                    // marginRight: MSCALE(12),
+                    // top: calc(50% - 36px/2);
+                    backgroundColor: 'rgba(118, 118, 128, 0.12)'
+                }}>
+                    <Image
                         width={MSCALE(24)}
                         height={MSCALE(22)}
                         resizeMode={'contain'}
@@ -101,7 +93,7 @@ const SearchScreen = (props) => {
                         value={text}
                         style={{
                             width: MSCALE(220),
-                            flex:1,
+                            flex: 1,
                             height: MSCALE(Platform.OS == 'ios' ? MSCALE(22) : MSCALE(80)),
                             alignSelf: 'center',
                             color: '#000',
@@ -111,13 +103,13 @@ const SearchScreen = (props) => {
                     />
                     <TouchableOpacity
                         onPress={actionClear}
-                        style={{ alignItems: 'flex-end', width: MSCALE(20), height: MSCALE(36), justifyContent: 'center',marginRight:MSCALE(20) }}>
+                        style={{ alignItems: 'flex-end', width: MSCALE(20), height: MSCALE(36), justifyContent: 'center', marginRight: MSCALE(20) }}>
                         <Image
                             width={MSCALE(14)}
                             height={MSCALE(14)}
                             resizeMode={'contain'}
                             source={require('./asset/cancel.png')}
-                            style={{ width: MSCALE(14), height: MSCALE(14)}}
+                            style={{ width: MSCALE(14), height: MSCALE(14) }}
                         />
                         {/* <Text style={{alignSelf:'center'}}>abc</Text> */}
                     </TouchableOpacity>
@@ -128,36 +120,39 @@ const SearchScreen = (props) => {
         )
     }
 
-
     // function handling
-
     const actionClear = () => {
         setText('')
     }
 
-    const actionSearch = () => {
-       text != '' && navigation.push('ResponseScreen',{key:text})
-        // setArrayResponse(dataTest)
+    const chooseItem = (t) => {
+        setText(t?.keyword)
+        actionSearch(t?.keyword)
+    }
+
+    const actionSearch = async (keyword) => {
+        let searchKeyword = text;
+        if (keyword != undefined && typeof (keyword) == 'string' && keyword?.trim() != '') {
+            searchKeyword = keyword
+        }
+        insertKeyword(searchKeyword)
+        searchKeyword != '' && navigation.push('ResponseScreen', { key: searchKeyword })
+        setupData()
     }
 
     const actionChangeText = (t) => {
         setText(t)
     }
-    const fillterKeyword = () => {
-        let dataNew = arrayTest.filter(item => {
-            let textUp = text?.toUpperCase()
-            let keyword = item?.content?.toUpperCase()
-            return keyword.includes(textUp)
-        })
-        setArrayKey(dataNew)
+
+    const fillterKeyword = async () => {
+        await setupData()
     }
 
-   
-    return(
-        <View style={{flex:1,backgroundColor:'white'}}>
-          {renderHeader()}
+    return (
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+            {renderHeader()}
             {renderDetal()}
-          {/* <NetworkError/> */}
+            {/* <NetworkError/> */}
         </View>
     )
 }
