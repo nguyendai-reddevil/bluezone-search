@@ -80,7 +80,7 @@ const SearchScreen = (props) => {
     // function render
 
     const renderHeader = () => {
-        return(
+        return (
             <View style={{flexDirection:'row',marginTop:MSCALE(56),marginBottom:MSCALE(10),alignItems:'center'}}>
                 <TouchableOpacity style={{marginLeft:MSCALE(15)}}
                     onPress={() => navigation.goBack()}
@@ -110,15 +110,19 @@ const SearchScreen = (props) => {
                         source={require('./asset/search.png')}
                         style={{width:MSCALE(24),height:MSCALE(22),alignSelf:'center',marginLeft:MSCALE(11)}}
                     />
-                    <TextInput
-                        onSubmitEditing={actionSearch}
-                        returnKeyType={'search'}
-                        onChangeText={t => actionChangeText(t)}
-                        onFocus={() => navigation.push('SearchScreen',{key:text})}
-                        value={text}
-                        style={{width:MSCALE(221),height:MSCALE(22),alignSelf:'center',marginLeft:MSCALE(7)}}
-                        placeholder={'Tra cứu bệnh nhân,tin tức y tế...'}
-                    />
+                    <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => navigation.push('SearchScreen',{key:text})}
+                    style={{width:MSCALE(221),alignSelf:'center',
+                    justifyContent:'center',
+                    flex:1,
+                    marginLeft:MSCALE(7)}}
+                    >
+                        <Text style={{fontSize:MSCALE(17),fontWeight:'400'}}>
+                            {text}
+                        </Text>
+                    </TouchableOpacity>
+                   
                     <TouchableOpacity 
                     onPress={actionClear}
                     style={{alignItems:'flex-end',width:MSCALE(20),height:MSCALE(36),justifyContent:'center',marginLeft:MSCALE(49)}}>
