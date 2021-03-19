@@ -10,11 +10,11 @@ import NetInfo from '@react-native-community/netinfo';
 import ItemResponse from './component/ItemResponse';
 import { getListKeyword, insertKeyword, removeKeywordLast, removeAllHitorySearch, removeKeyword } from '../../../core/db/SqliteDb';
 
-const SearchScreen = (props) => {
+const SearchScreen = ({textSearch,popup,closePopup}) => {
 
     const navigation = useNavigation()
-    const keySearch = props?.route?.params?.key
-    const [text, setText] = useState(keySearch || '')
+    console.log('textSearchtextSearchtextSearch',textSearch,popup)
+    const [text, setText] = useState(textSearch || '')
     const [arrayKey, setArrayKey] = useState([])
     const [refresh, setRefresh] = useState(false)
     // useEffect
@@ -57,7 +57,7 @@ const SearchScreen = (props) => {
         return (
             <View style={{ flexDirection: 'row', marginTop: MSCALE(56), alignItems: 'center' }}>
                 <TouchableOpacity
-                    onPress={() => navigation.goBack()}
+                    onPress={closePopup}
                 >
                     <Image
                         width={MSCALE(24)}
@@ -89,7 +89,7 @@ const SearchScreen = (props) => {
                         onSubmitEditing={actionSearch}
                         returnKeyType={'search'}
                         onChangeText={t => actionChangeText(t)}
-                        autoFocus={text ? true : false}
+                        autoFocus={popup ? true : false}
                         value={text}
                         style={{
                             width: MSCALE(220),
@@ -126,11 +126,13 @@ const SearchScreen = (props) => {
     }
 
     const chooseItem = (t) => {
+        closePopup && closePopup()
         setText(t?.keyword)
         actionSearch(t?.keyword)
     }
 
     const actionSearch = async (keyword) => {
+        closePopup && closePopup()
         let searchKeyword = text;
         if (keyword != undefined && typeof (keyword) == 'string' && keyword?.trim() != '') {
             searchKeyword = keyword
@@ -152,7 +154,6 @@ const SearchScreen = (props) => {
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             {renderHeader()}
             {renderDetal()}
-            {/* <NetworkError/> */}
         </View>
     )
 }

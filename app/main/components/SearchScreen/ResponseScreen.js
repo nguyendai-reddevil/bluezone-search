@@ -1,12 +1,13 @@
-import React,{ memo, useEffect, useState,useMemo } from 'react';
+import React,{ memo, useEffect, useState,useMemo,useCallback } from 'react';
 import { View,Text,TextInput,Image, Keyboard, RefreshControl,ActivityIndicator } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation,useFocusEffect } from '@react-navigation/native';
 import { MSCALE } from './Reponsive';
 import ItemSearch from './component/ItemKeyword';
 import NetworkError from './NetworkErrorScreen';
 import NetInfo from '@react-native-community/netinfo';
 import ItemResponse from './component/ItemResponse';
+import SearchScreen from './SearchScreen';
 
 const dataTest = [
     {
@@ -58,10 +59,11 @@ const dataTest = [
                 img:'https://cdn.24h.com.vn/upload/1-2021/images/2021-03-09/Nu-than-tuong-co-vong-1-cnph4caxzz8ukoxcsj1iesgpc-1615277518-965-width800height1421.jpg'
                 },
 ]
-const SearchScreen = (props) => {
+const ResponseScreen = (props) => {
     const navigation = useNavigation()
     console.log('propspropsprops',props)
     const [text,setText] = useState('')
+    const [showSearch,setShowSearch] = useState(false)
     const [isNetwork,setIsNetwork] = useState(true)
     const [refresh,setRefresh] = useState(false)
     const [loadmore,setLoadmore] = useState(false)
@@ -77,6 +79,11 @@ const SearchScreen = (props) => {
     },[text])
     
 
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //       setShowSearch(false)
+    //     },[])
+    //   );
     // function render
 
     const renderHeader = () => {
@@ -112,7 +119,7 @@ const SearchScreen = (props) => {
                     />
                     <TouchableOpacity
                     activeOpacity={0.8}
-                    onPress={() => navigation.push('SearchScreen',{key:text})}
+                    onPress={actionSetTextSearch}
                     style={{width:MSCALE(221),alignSelf:'center',
                     justifyContent:'center',
                     flex:1,
@@ -141,7 +148,13 @@ const SearchScreen = (props) => {
            
         )
     }
-
+    const actionSetTextSearch = () => {
+        console.log('nanananannaviaivaiviava',props,navigation)
+        setShowSearch(true)
+    }
+    const closePopup = () => {
+        setShowSearch(false)
+    }
     const renderResponse = (data) => {
         return(
             <View style={{flex:1}}>
@@ -173,7 +186,7 @@ const SearchScreen = (props) => {
     }
     const actionClear = () => {
         setText('')
-        navigation.push('SearchScreen',{key:''})
+        setShowSearch(true)
     }
     const actionSearch = () => {
         setRefresh(false)
@@ -190,10 +203,10 @@ const SearchScreen = (props) => {
    
     return(
         <View style={{flex:1,backgroundColor:'white'}}>
-          {renderHeader()}
-          {renderResponse(arrayResponse)}
+          {!showSearch && renderHeader()}
+          {showSearch ? <SearchScreen closePopup={closePopup} textSearch = {text} popup={true}/> : renderResponse(arrayResponse)}
           {/* <NetworkError/> */}
         </View>
     )
 }
-export default  SearchScreen
+export default  ResponseScreen
