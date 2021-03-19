@@ -126,19 +126,18 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
     }
 
     const chooseItem = (t) => {
-        closePopup && closePopup()
         setText(t?.keyword)
         actionSearch(t?.keyword)
     }
 
     const actionSearch = async (keyword) => {
-        closePopup && closePopup()
         let searchKeyword = text;
         if (keyword != undefined && typeof (keyword) == 'string' && keyword?.trim() != '') {
             searchKeyword = keyword
         }
         insertKeyword(searchKeyword)
         searchKeyword != '' && navigation.push('ResponseScreen', { key: searchKeyword })
+        popup && closePopup()
         setupData()
     }
 
