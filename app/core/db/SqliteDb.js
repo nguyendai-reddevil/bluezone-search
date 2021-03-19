@@ -411,9 +411,33 @@ const insertKeyword = (keyword) => {
       txTemp.executeSql(
         queryValue,
         [],
-        () => resolve(),
-        () => resolve()
+        (txTemp2, resultTmp) => {
+          resolve()
+        }
+        ,
+        () => {
+          resolve()
+        }
       )
+    }
+
+    const removeLastItem = async (tx) => {
+      return new Promise((success, error) => {
+        const queryValueDelete = `delete from historySearch where id in (
+          select id from historySearch order by timestamp limit 1
+        )`;
+
+        tx.executeSql(
+          queryValueDelete,
+          [],
+          (tx, res) => {
+            success(tx);
+          },
+          (e) => {
+            success();
+          },
+        );
+      })
     }
 
     db = open();
@@ -421,16 +445,14 @@ const insertKeyword = (keyword) => {
       tx.executeSql(
         queryGetNumberRow,
         [],
-        (txTemp, results) => {
+        async (txTemp, results) => {
           var len = results.rows.length
           if (len > 0) {
             if (results.rows.item(0).sumV >= 500) {
-              removeKeywordLast()
-                .then(() => addToSqlite(txTemp))
-                .catch(() => addToSqlite(txTemp))
-            } else {
-              addToSqlite(txTemp)
+              removeLastItem(txTemp)
             }
+
+            addToSqlite(txTemp)
           }
           resolve();
         },
@@ -474,12 +496,10 @@ const removeKeywordLast = () => {
       tx.executeSql(
         queryValue,
         [],
-        () => {
-          console.log('THANH CONG')
-          resolve();
+        (tx, res) => {
+          resolve(tx);
         },
         (e) => {
-          console.log('THATTHTBI', e)
           resolve();
         },
       );
@@ -515,6 +535,30 @@ const getListKeyword = (keyword) => {
     db.transaction(tx => {
       tx.executeSql(
         query,
+        [],
+        (txTemp, results) => {
+          let temp = [];
+          if (results.rows.length > 0) {
+            for (let i = 0; i < results.rows.length; ++i) {
+              temp.push(results.rows.item(i));
+            }
+          }
+          resolve(temp);
+        },
+        () => {
+          resolve([]);
+        },
+      );
+    })
+  })
+}
+
+export const getAllKeyword = () => {
+  return new Promise((resolve, _) => {
+    db = open();
+    db.transaction(tx => {
+      tx.executeSql(
+        'select * from historySearch order by timestamp desc',
         [],
         (txTemp, results) => {
           let temp = [];
