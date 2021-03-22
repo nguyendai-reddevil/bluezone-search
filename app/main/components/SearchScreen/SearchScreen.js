@@ -80,9 +80,10 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
                         onSubmitEditing={actionSearch}
                         returnKeyType={'search'}
                         onChangeText={t => actionChangeText(t)}
-                        autoFocus={popup ? true : false}
+                        autoFocus={true}
                         value={text}
                         style={styles.textStyle}
+                        placeholderTextColor={'#979797'}
                         placeholder={'Tra cứu bệnh nhân, tin tức y tế ...'}
                     />
                     <TouchableOpacity
@@ -122,7 +123,6 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
         searchKeyword != '' && navigation.push('ResponseScreen', { key: searchKeyword })
         popup && closePopup()
         setupData()
-        await getLIIIITmp()
     }
 
     const actionChangeText = (t) => {

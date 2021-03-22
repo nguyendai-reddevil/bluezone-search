@@ -43,18 +43,18 @@ const DetailScreen = (props) => {
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}>
-                    <FastImage style={{
+                    {/* <FastImage style={{
                         width: MSCALE(20),
                         height: MSCALE(20),
                         backgroundColor: '#f8f',
                         marginRight: 10
-                    }} />
+                    }} /> */}
 
                     <Text style={{
                         textAlign: 'center',
                         fontWeight: '500',
                         fontSize: MSCALE(18)
-                    }}>Bài viêt</Text>
+                    }}>Bài viết</Text>
                 </View>
                 <View style={{ width: MSCALE(24) }} />
                 {/* <View  style={{

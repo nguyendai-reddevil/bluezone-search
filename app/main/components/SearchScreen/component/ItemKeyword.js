@@ -31,6 +31,7 @@ const ItemSearch = ({ item, onPress }) => {
                 source={require('../asset/choose.png')}
                 resizeMode={'contain'}
                 style={[styles.imageIcon, {
+                    width:MSCALE(15),height:MSCALE(15)
                 }]}
             />
 

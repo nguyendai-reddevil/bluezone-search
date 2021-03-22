@@ -1,5 +1,6 @@
-import React, { memo, useEffect, useState, useMemo } from 'react';
-import { View, Text, TextInput, Image, Keyboard, RefreshControl, ActivityIndicator, Platform, StyleSheet } from 'react-native';
+import React, { memo, useEffect, useState, useMemo ,useRef} from 'react';
+import { View, Text, TextInput, Image, Keyboard, RefreshControl, ActivityIndicator,
+    Platform, StyleSheet } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation,useFocusEffect } from '@react-navigation/native';
 import { MSCALE } from './Reponsive';
@@ -61,6 +62,7 @@ const dataTest = [
     },
 ]
 const ResponseScreen = (props) => {
+
     const navigation = useNavigation()
     console.log('propspropsprops',props)
     const [text,setText] = useState('')
@@ -114,7 +116,7 @@ const ResponseScreen = (props) => {
                     <View style={styles.containerText} >
                         <TouchableOpacity
                             activeOpacity={0.8}
-                            onPress={() => navigation.push('SearchScreen', { key: text })}
+                            onPress={actionSetTextSearch}
                             style={{
                                 justifyContent: 'center'
                             }}>
@@ -188,11 +190,12 @@ const ResponseScreen = (props) => {
         }
 
     }
+
     const actionClear = () => {
         setText('')
         setShowSearch(true)
     }
-
+    //call api search
     const actionSearch = () => {
         setRefresh(false)
         setArrayResponse(dataTest)
@@ -211,7 +214,6 @@ const ResponseScreen = (props) => {
                     <NetworkError />
                 ) : showSearch ? <SearchScreen closePopup={closePopup} textSearch = {text} popup={true}/> : renderResponse(arrayResponse)
             }
-            
             
         </View>
     )
@@ -252,4 +254,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SearchScreen
+export default ResponseScreen

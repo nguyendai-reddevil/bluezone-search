@@ -74,11 +74,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     txt_detail: {
-        fontFamily: 'Roboto',
-        fontWeight: '100',
+        fontWeight: '400',
+        fontFamily: 'Roboto-Medium',
         fontSize: MSCALE(17),
         paddingRight: MSCALE(20),
-        color: '#414141',
+        color: '#434446',
         flex: 2 / 3
     },
     img_thumb: {
