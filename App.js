@@ -22,7 +22,7 @@
 import React from 'react';
 import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 
 // Components
 import LoadingScreen from './app/main/components/LoadingScreen';
@@ -375,6 +375,12 @@ class App extends React.Component {
               </Stack.Navigator>
             ) : !isHome ? (
               <Stack.Navigator
+              screenOptions={{
+                gestureEnabled:true,
+                gestureDirection:'horizontal',
+                cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS
+              }}
+            
                 id="Welcome"
                 headerMode="none"
                 mode="card"
@@ -384,6 +390,7 @@ class App extends React.Component {
                   component={this.WelcomeProps}
                 /> */}
                 <Stack.Screen
+                
                 name= {'SearchScreen'}  
                 component={SearchScreen}
                 /> 

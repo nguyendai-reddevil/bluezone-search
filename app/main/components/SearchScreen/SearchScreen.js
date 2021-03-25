@@ -1,11 +1,11 @@
-import React, { memo, useEffect, useState, } from 'react';
+import React, { memo, useEffect, useState, useCallback } from 'react';
 import { View, TextInput, Image, Platform, StyleSheet } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { MSCALE } from './Reponsive';
-import { useNavigation } from '@react-navigation/native';
+import { MSCALE ,isIphoneX} from './Reponsive';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import ItemSearch from './component/ItemKeyword';
 import { getListKeyword, insertKeyword, } from '../../../core/db/SqliteDb';
-
+import ItemHeader from './component/ItemHeader';
 const SearchScreen = ({textSearch,popup,closePopup}) => {
 
     const navigation = useNavigation()
@@ -13,15 +13,23 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
     const [text, setText] = useState(textSearch || '')
     const [arrayKey, setArrayKey] = useState([])
     const [refresh, setRefresh] = useState(false)
+    
     // useEffect
 
     useEffect(() => {
+        
         setupData()
     }, [])
-
+ 
     useEffect(() => {
         fillterKeyword()
     }, [text])
+
+    useFocusEffect(
+        useCallback(() => {
+            setupData(text)
+        },[text])
+    )
 
     // function render
     const renderDetal = () => {
@@ -47,61 +55,6 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
         } catch (error) {
             console.log('Setup list data serach error', error)
         }
-    }
-
-    const renderHeader = () => {
-        return (
-            <View style={styles.containerHeader}>
-                <TouchableOpacity
-                    onPress={closePopup}
-                >
-                    <Image
-                        width={MSCALE(24)}
-                        height={MSCALE(24)}
-                        resizeMode={'contain'}
-                        source={require('./asset/back.png')}
-                        style={{
-                            width: MSCALE(24),
-                            height: MSCALE(24),
-                            marginLeft: MSCALE(15)
-                        }}
-                    />
-                </TouchableOpacity>
-
-                <View style={styles.containerInput}>
-                    <Image
-                        width={MSCALE(24)}
-                        height={MSCALE(22)}
-                        resizeMode={'contain'}
-                        source={require('./asset/search.png')}
-                        style={styles.imageSearch}
-                    />
-                    <TextInput
-                        onSubmitEditing={actionSearch}
-                        returnKeyType={'search'}
-                        onChangeText={t => actionChangeText(t)}
-                        autoFocus={true}
-                        value={text}
-                        style={styles.textStyle}
-                        placeholderTextColor={'#979797'}
-                        placeholder={'Tra cứu bệnh nhân, tin tức y tế ...'}
-                    />
-                    <TouchableOpacity
-                        onPress={actionClear}
-                        style={styles.containerClear}>
-                        <Image
-                            width={MSCALE(14)}
-                            height={MSCALE(14)}
-                            resizeMode={'contain'}
-                            source={require('./asset/cancel.png')}
-                            style={{ width: MSCALE(14), height: MSCALE(14) }}
-                        />
-                    </TouchableOpacity>
-
-                </View>
-            </View>
-
-        )
     }
 
     // function handling
@@ -135,7 +88,13 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
 
     return (
         <View style={styles.container}>
-            {renderHeader()}
+            {/* {renderHeader()} */}
+            <ItemHeader 
+            text={text}
+            actionChangeText={actionChangeText} 
+            actionClear={actionClear} 
+            actionSearch={actionSearch} 
+            closePopup={closePopup} />
             {renderDetal()}
         </View>
     )
@@ -148,7 +107,7 @@ const styles = StyleSheet.create({
     },
     containerHeader: {
         flexDirection: 'row',
-        marginTop: MSCALE(Platform.OS == 'ios' ? 56 : 24),
+        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 40 : 24),
         alignItems: 'center'
     },
     containerInput: {

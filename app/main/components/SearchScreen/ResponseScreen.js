@@ -3,7 +3,7 @@ import { View, Text, TextInput, Image, Keyboard, RefreshControl, ActivityIndicat
     Platform, StyleSheet } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation,useFocusEffect } from '@react-navigation/native';
-import { MSCALE } from './Reponsive';
+import { MSCALE ,isIphoneX} from './Reponsive';
 import ItemSearch from './component/ItemKeyword';
 import NetworkError from './NetworkErrorScreen';
 import NetInfo from '@react-native-community/netinfo';
@@ -210,9 +210,10 @@ const ResponseScreen = (props) => {
         <View style={styles.container}>
              {!showSearch && renderHeader()}
              {
-                !isNetwork ? (
-                    <NetworkError />
-                ) : showSearch ? <SearchScreen closePopup={closePopup} textSearch = {text} popup={true}/> : renderResponse(arrayResponse)
+                showSearch ? <SearchScreen closePopup={closePopup} textSearch = {text} popup={true}/> : !isNetwork ? (
+                    <NetworkError /> 
+                    ) 
+                : renderResponse(arrayResponse)
             }
             
         </View>
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
     },
     containerHeader: {
         flexDirection: 'row',
-        marginTop: MSCALE(Platform.OS == 'ios' ? 56 : 24),
+        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 40 : 24),
         marginBottom: MSCALE(16),
         alignItems: 'center'
     },

@@ -525,10 +525,10 @@ const removeAllHitorySearch = async () => {
 const getListKeyword = (keyword) => {
   let query = ''
   if (keyword == undefined || keyword?.trim() == '') {
-    query = `select * from historySearch order by timestamp desc limit 5`
+    query = `select * from historySearch order by timestamp desc limit 10`
   } else {
     let slugSearch = convertToSlug(keyword?.trim()?.replace(/ +(?= )/g, ''))
-    query = `select * from historySearch where slug like "%${slugSearch}%" order by timestamp desc limit 5`
+    query = `select * from historySearch where slug like "%${slugSearch}%" order by timestamp desc limit 10`
   }
   return new Promise((resolve, _) => {
     db = open();
