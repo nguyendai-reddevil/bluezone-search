@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState, useCallback } from 'react';
-import { View, TextInput, Image, Platform, StyleSheet } from 'react-native';
+import { View, TextInput, Image, Platform, StyleSheet,Text ,Keyboard} from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { MSCALE ,isIphoneX} from './Reponsive';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -9,7 +9,6 @@ import ItemHeader from './component/ItemHeader';
 const SearchScreen = ({textSearch,popup,closePopup}) => {
 
     const navigation = useNavigation()
-    console.log('textSearchtextSearchtextSearch',textSearch,popup)
     const [text, setText] = useState(textSearch || '')
     const [arrayKey, setArrayKey] = useState([])
     const [refresh, setRefresh] = useState(false)
@@ -34,11 +33,12 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
     // function render
     const renderDetal = () => {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, marginLeft: MSCALE(20.5),}}>
                 <FlatList
-                    style={{ marginLeft: MSCALE(57) }}
+                    style={{flex:1}}
                     data={arrayKey}
                     keyExtractor={(item, index) => `key_${index}`}
+            
                     renderItem={(item) =>
                         <ItemSearch
                             item={item.item}
@@ -73,7 +73,7 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
             searchKeyword = keyword
         }
         await insertKeyword(searchKeyword)
-        searchKeyword != '' && navigation.push('ResponseScreen', { key: searchKeyword })
+        searchKeyword != '' && navigation.navigate('ResponseScreen', { key: searchKeyword })
         popup && closePopup()
         setupData()
     }
@@ -142,4 +142,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default memo(SearchScreen)
+export default SearchScreen

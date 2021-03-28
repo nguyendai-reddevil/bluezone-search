@@ -80,7 +80,9 @@ const ResponseScreen = (props) => {
         setText(keySearch)
         actionSearch()
     }, [text])
+    useEffect(() => {
 
+    },[showSearch])
 
     // useFocusEffect(
     //     React.useCallback(() => {
@@ -92,16 +94,14 @@ const ResponseScreen = (props) => {
     const renderHeader = () => {
         return (
             <View style={styles.containerHeader}>
-                <TouchableOpacity style={{ marginLeft: MSCALE(15) }}
+                <TouchableOpacity style={{ marginLeft: MSCALE(19.8), }}
                     onPress={() => navigation.goBack()}>
                     <Image
-                        width={MSCALE(24)}
-                        height={MSCALE(24)}
                         resizeMode={'contain'}
                         source={require('./asset/back.png')}
                         style={{
-                            width: MSCALE(24),
-                            height: MSCALE(24)
+                            width: MSCALE(12),
+                            height: MSCALE(24),
                         }}
                     />
                 </TouchableOpacity>
@@ -113,17 +113,19 @@ const ResponseScreen = (props) => {
                         style={styles.imageIcon}
                     />
 
-                    <View style={styles.containerText} >
+                    <View style={styles.containerText}>
                         <TouchableOpacity
                             activeOpacity={0.8}
                             onPress={actionSetTextSearch}
                             style={{
-                                justifyContent: 'center'
+                                justifyContent: 'center', 
+                                paddingLeft:MSCALE(7),
+                                paddingRight:MSCALE(16.9),
                             }}>
                             <Text
                                 numberOfLines={1}
                                 style={{
-                                    fontSize: MSCALE(17),
+                                    fontSize: MSCALE(15),
                                     fontWeight: '400',
                                 }}>
                                 {text}
@@ -143,8 +145,7 @@ const ResponseScreen = (props) => {
                             resizeMode={'contain'}
                             source={require('./asset/cancel.png')}
                             style={{
-                                width: MSCALE(14),
-                                height: MSCALE(14),
+                                width: MSCALE(12), height: MSCALE(12)
                             }}
                         />
                     </TouchableOpacity>
@@ -159,7 +160,9 @@ const ResponseScreen = (props) => {
         setShowSearch(true)
     }
     const closePopup = () => {
+        Keyboard.dismiss()
         setShowSearch(false)
+        // setTimeout(() => setShowSearch(false),1) 
     }
     const renderResponse = (data) => {
         return (
@@ -210,7 +213,8 @@ const ResponseScreen = (props) => {
         <View style={styles.container}>
              {!showSearch && renderHeader()}
              {
-                showSearch ? <SearchScreen closePopup={closePopup} textSearch = {text} popup={true}/> : !isNetwork ? (
+                showSearch ? <SearchScreen closePopup={closePopup} textSearch = {text} popup={true}/> :
+                !isNetwork ? (
                     <NetworkError /> 
                     ) 
                 : renderResponse(arrayResponse)
@@ -232,21 +236,19 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     imageIcon: {
-        width: MSCALE(22),
-        height: MSCALE(22),
-        marginHorizontal: MSCALE(16)
+            width: MSCALE(20),
+            height: MSCALE(20),
+            marginLeft: MSCALE(11)
     },
-    containerInput: {
+   containerInput: {
         flexDirection: 'row',
-        height: MSCALE(36),
-        borderRadius: MSCALE(10),
-        marginLeft: MSCALE(20),
+        height: MSCALE(40),
+        borderRadius: MSCALE(20),
+        marginLeft: MSCALE(14.2),
         backgroundColor: '#efeff0',
         flex: 1,
-        marginRight: MSCALE(16),
-        overflow: 'hidden',
         alignItems: 'center',
-        // flexWrap: "wrap",
+        marginRight: MSCALE(20)
     },
     containerText: {
         flex: 1,

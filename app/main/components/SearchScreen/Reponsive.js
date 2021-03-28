@@ -1,6 +1,6 @@
 import {Dimensions, Platform, PixelRatio} from 'react-native';
-const guidelineBaseWidth = 414;
-const guidelineBaseHeight = 895;
+const guidelineBaseWidth = 360;
+const guidelineBaseHeight = 720;
 
 const {width, height} = Dimensions.get('window');
 const SMALL_SCREEN = width < guidelineBaseWidth || height < guidelineBaseHeight;

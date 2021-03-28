@@ -1,32 +1,44 @@
 
-import React, { memo, useEffect, useState, useCallback } from 'react';
-import { View, TextInput, Image, Platform, StyleSheet,TouchableOpacity,Text } from 'react-native';
+import React, { memo, useEffect, useState, useCallback,useRef } from 'react';
+import { View, TextInput, Image, Platform, StyleSheet,TouchableOpacity,Text,Keyboard } from 'react-native';
 import { MSCALE ,isIphoneX } from '../Reponsive';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text}) => {
 
+    const refInput = useRef()
+
+    // React.useEffect(()=>{
+    //     Keyboard.addListener('keyboardDidHide',_keyboadHide)
+    //     return ()=>{
+    //         Keyboard.removeListener('keyboardDidHide',_keyboadHide)
+    //     }
+    // },[])
+    const _keyboadHide=()=>{
+        console.log('_keyboadHide')
+    }
+    const actionClosePopup = () => {
+        refInput.current?.blur()
+        // Keyboard.dismiss()
+        // closePopup()
+        // alert('ok')
+    }
     return (
         <View style={styles.containerHeader}>
             <TouchableOpacity
-                onPress={closePopup}
+                onPress={actionClosePopup}
             >
                 <Image
-                    width={MSCALE(24)}
-                    height={MSCALE(24)}
                     resizeMode={'contain'}
                     source={require('../asset/back.png')}
                     style={{
-                        width: MSCALE(24),
+                        width: MSCALE(12),
                         height: MSCALE(24),
-                        marginLeft: MSCALE(15)
                     }}
                 />
             </TouchableOpacity>
 
             <View style={styles.containerInput}>
                 <Image
-                    width={MSCALE(24)}
-                    height={MSCALE(22)}
                     resizeMode={'contain'}
                     source={require('../asset/search.png')}
                     style={styles.imageSearch}
@@ -34,22 +46,21 @@ const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text})
                 <TextInput
                     onSubmitEditing={actionSearch}
                     returnKeyType={'search'}
+                    ref={refInput}
                     onChangeText={t => actionChangeText(t)}
-                    autoFocus={true}
+                    // autoFocus={true}
                     value={text}
                     style={styles.textStyle}
-                    placeholderTextColor={'#979797'}
-                    placeholder={'Tra cứu bệnh nhân, tin tức y tế ...'}
+                    placeholderTextColor={'#9c9c9c'}
+                    placeholder={'Tra cứu thông tin y tế ...'}
                 />
                 <TouchableOpacity
                     onPress={actionClear}
                     style={styles.containerClear}>
                     <Image
-                        width={MSCALE(14)}
-                        height={MSCALE(14)}
                         resizeMode={'contain'}
                         source={require('../asset/cancel.png')}
-                        style={{ width: MSCALE(14), height: MSCALE(14) }}
+                        style={{ width: MSCALE(12), height: MSCALE(12) }}
                     />
                 </TouchableOpacity>
 
@@ -60,32 +71,34 @@ const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text})
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white'
-    },
+ 
     containerHeader: {
         flexDirection: 'row',
-        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 40 : 24),
-        alignItems: 'center'
+        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 40 : 33),
+        alignItems: 'center',
+        marginLeft: MSCALE(19.8),
     },
     containerInput: {
         flexDirection: 'row',
-        height: MSCALE(36),
-        borderRadius: MSCALE(10),
-        marginLeft: MSCALE(20),
+        height: MSCALE(40),
+        borderRadius: MSCALE(20),
+        marginLeft: MSCALE(14.2),
         backgroundColor: '#efeff0',
         flex: 1,
-        marginRight: MSCALE(16)
+        marginRight: MSCALE(20)
     },
     imageSearch: {
-        width: MSCALE(24),
-        height: MSCALE(22),
+        width: MSCALE(20),
+        height: MSCALE(20),
         alignSelf: 'center',
         marginLeft: MSCALE(11)
     },
     textStyle: {
-        width: MSCALE(220),
+        // width: MSCALE(220),
+        fontSize:MSCALE(15),
+        fontFamily: 'OpenSans',
+        paddingLeft:MSCALE(5.4),
+        paddingRight:MSCALE(16.9),
         flex: 1,
         height: MSCALE(Platform.OS == 'ios' ? MSCALE(22) : MSCALE(80)),
         alignSelf: 'center',
@@ -94,10 +107,9 @@ const styles = StyleSheet.create({
     },
     containerClear: {
         alignItems: 'flex-end',
-        width: MSCALE(20),
-        height: MSCALE(36),
         justifyContent: 'center',
-        marginRight: MSCALE(20)
+        marginRight: MSCALE(16.9)
     }
 })
-export default memo(ItemHeader)
+// export default memo(ItemHeader)
+export default (ItemHeader)
