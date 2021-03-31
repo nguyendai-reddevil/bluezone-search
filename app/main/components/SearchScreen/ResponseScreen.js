@@ -10,85 +10,54 @@ import NetInfo from '@react-native-community/netinfo';
 import ItemResponse from './component/ItemResponse';
 import SearchScreen from './SearchScreen';
 import FastImage from 'react-native-fast-image';
-
+//api
+import Api from './api/api';
 const dataTest = [
     {
         id: 1,
-        url: 'https://www.24h.com.vn',
-        source: 'https://www.24h.com.vn/nguoi-mau-hoa-hau/nu-than-tuong-gay-thot-tim-vi-ao-tre-nai-va-luat-ngam-mac-chi-ho-1-bo-phan-c214a1232603.html',
+        web_url: 'https://www.24h.com.vn',
+        post_url: 'https://www.24h.com.vn/nguoi-mau-hoa-hau/nu-than-tuong-gay-thot-tim-vi-ao-tre-nai-va-luat-ngam-mac-chi-ho-1-bo-phan-c214a1232603.html',
         title: 'Thời trang kpop',
-        detail: 'Cô bắt đầu công việc diễn xuất từ trước khi bước chân vào tiểu học. Vào năm 1998, khi chỉ mới 5 tuổi,',
+        description: 'Cô bắt đầu công việc diễn xuất từ trước khi bước chân vào tiểu học. Vào năm 1998, khi chỉ mới 5 tuổi,',
         img: null
     },
     {
         id: 2,
-        url: 'https://www.24h.com.vn',
-        source: 'https://www.24h.com.vn/nguoi-mau-hoa-hau/nu-than-tuong-gay-thot-tim-vi-ao-tre-nai-va-luat-ngam-mac-chi-ho-1-bo-phan-c214a1232603.html',
+        web_url: 'https://www.24h.com.vn',
+        post_url: 'https://www.24h.com.vn/nguoi-mau-hoa-hau/nu-than-tuong-gay-thot-tim-vi-ao-tre-nai-va-luat-ngam-mac-chi-ho-1-bo-phan-c214a1232603.html',
         title: 'Thời trang kpop',
-        detail: 'Còn Park Eun Bin thì như thế nào? Thoạt nhìn, cô ấy có vẻ là một người gặp nhiều may mắn. Cô bắt đầu công việc diễn xuất từ trước khi bước chân vào tiểu học. Vào năm 1998, khi chỉ mới 5 tuổi, Park Eun Bin đã mơ ước trở thành một diễn viên.',
+        description: 'Còn Park Eun Bin thì như thế nào? Thoạt nhìn, cô ấy có vẻ là một người gặp nhiều may mắn. Cô bắt đầu công việc diễn xuất từ trước khi bước chân vào tiểu học. Vào năm 1998, khi chỉ mới 5 tuổi, Park Eun Bin đã mơ ước trở thành một diễn viên.',
         img: 'https://vfan-phinf.pstatic.net/20200305_30/15833824891252XO5R_JPEG/ebba68f6-ef44-4ba7-99a4-bbd149a98418.jpg?type=e1920'
     },
-    {
-        id: 3,
-        url: 'http://www.24h.com.vn',
-        source: 'https://www.24h.com.vn/nguoi-mau-hoa-hau/nu-than-tuong-gay-thot-tim-vi-ao-tre-nai-va-luat-ngam-mac-chi-ho-1-bo-phan-c214a1232603.html',
-        title: 'Thời trang kpop Thời trang kpop Thời trang kpop Thời trang kpop g kpop Thời trang kpop ',
-        detail: 'Trang phục thiếu an toàn khiến',
-        img: 'https://cdn.24h.com.vn/upload/1-2021/images/2021-03-09/Nu-than-tuong-co-vong-1-cnph4caxzz8ukoxcsj1iesgpc-1615277518-965-width800height1421.jpg'
-    },
-    {
-        id: 4,
-        url: 'https://www.24h.com.vn',
-        source: 'https://www.24h.com.vn/nguoi-mau-hoa-hau/nu-than-tuong-gay-thot-tim-vi-ao-tre-nai-va-luat-ngam-mac-chi-ho-1-bo-phan-c214a1232603.html',
-        title: 'Thời trang kpop',
-        detail: 'Trang phục thiếu an toàn khiến Eun Bin (CLC) cùng một số người đẹp Hàn Quốc gặp sự cố trên sân khấu',
-        img: 'https://cdn.24h.com.vn/upload/1-2021/images/2021-03-09/Nu-than-tuong-co-vong-1-cnph4caxzz8ukoxcsj1iesgpc-1615277518-965-width800height1421.jpg'
-    },
-    {
-        id: 5,
-        url: 'https://www.24h.com.vn',
-        source: 'https://www.24h.com.vn/nguoi-mau-hoa-hau/nu-than-tuong-gay-thot-tim-vi-ao-tre-nai-va-luat-ngam-mac-chi-ho-1-bo-phan-c214a1232603.html',
-        title: 'Thời trang kpop',
-        detail: 'Trang phục thiếu an toàn khiến Eun Bin (CLC) cùng một số người đẹp Hàn Quốc gặp sự cố trên sân khấu',
-        img: 'https://cdn.24h.com.vn/upload/1-2021/images/2021-03-09/Nu-than-tuong-co-vong-1-cnph4caxzz8ukoxcsj1iesgpc-1615277518-965-width800height1421.jpg'
-    },
-    {
-        id: 6,
-        url: 'https://www.24h.com.vn',
-        source: 'https://www.24h.com.vn/nguoi-mau-hoa-hau/nu-than-tuong-gay-thot-tim-vi-ao-tre-nai-va-luat-ngam-mac-chi-ho-1-bo-phan-c214a1232603.html',
-        title: 'Thời trang kpop',
-        detail: 'Trang phục thiếu an toàn khiến Eun Bin (CLC) cùng một số người đẹp Hàn Quốc gặp sự cố trên sân khấu',
-        img: 'https://cdn.24h.com.vn/upload/1-2021/images/2021-03-09/Nu-than-tuong-co-vong-1-cnph4caxzz8ukoxcsj1iesgpc-1615277518-965-width800height1421.jpg'
-    },
+ 
 ]
 const ResponseScreen = (props) => {
 
     const navigation = useNavigation()
+    const keySearch = props?.route?.params?.key
     console.log('propspropsprops',props)
-    const [text,setText] = useState('')
+    const [text,setText] = useState(keySearch || '')
     const [showSearch,setShowSearch] = useState(false)
     const [isNetwork,setIsNetwork] = useState(true)
     const [refresh,setRefresh] = useState(false)
     const [loadmore,setLoadmore] = useState(false)
     const [arrayResponse,setArrayResponse] = useState([])
+    const [notData,setNotData] = useState(false)
     // useEffect
     useEffect(() => {
         checkWifi()
     }, [])
     useEffect(() => {
-        const keySearch = props?.route?.params?.key
-        setText(keySearch)
+
         actionSearch()
-    }, [text])
-    useEffect(() => {
+    }, [])
+    
 
-    },[showSearch])
-
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //       setShowSearch(false)
-    //     },[])
-    //   );
+    useFocusEffect(
+        React.useCallback(() => {
+          setShowSearch(false)
+        },[])
+      );
     // function render
 
     const renderHeader = () => {
@@ -100,8 +69,8 @@ const ResponseScreen = (props) => {
                         resizeMode={'contain'}
                         source={require('./asset/back.png')}
                         style={{
-                            width: MSCALE(12),
-                            height: MSCALE(24),
+                            width: MSCALE(10),
+                            height: MSCALE(20),
                         }}
                     />
                 </TouchableOpacity>
@@ -160,26 +129,7 @@ const ResponseScreen = (props) => {
         setShowSearch(true)
     }
     const closePopup = () => {
-        Keyboard.dismiss()
-        setShowSearch(false)
-        // setTimeout(() => setShowSearch(false),1) 
-    }
-    const renderResponse = (data) => {
-        return (
-            <View style={{ flex: 1 }}>
-                <FlatList
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refresh}
-                            onRefresh={handleRefesh}
-                        />
-                    }
-                    data={data}
-                    keyExtractor={(item, index) => `response_${item.id}`}
-                    renderItem={item => <ItemResponse item={item.item} />}
-                />
-            </View>
-        )
+        setTimeout(() => setShowSearch(false),Platform.OS == 'ios' ? 0 : 0) 
     }
 
     // function handling
@@ -199,9 +149,20 @@ const ResponseScreen = (props) => {
         setShowSearch(true)
     }
     //call api search
-    const actionSearch = () => {
-        setRefresh(false)
-        setArrayResponse(dataTest)
+    const actionSearch = async () => {
+        try {   
+            const res = await Api.searchKeyword(text)
+            console.log('resresresresresresresres',res.data.response)
+            setRefresh(false)
+            if(res.data.response == 0){
+                setNotData(true)
+            }else{
+                setArrayResponse(res.data.response)
+            }
+        } catch (error) {
+            
+        }
+     
     }
 
     const handleRefesh = () => {
@@ -214,10 +175,24 @@ const ResponseScreen = (props) => {
              {!showSearch && renderHeader()}
              {
                 showSearch ? <SearchScreen closePopup={closePopup} textSearch = {text} popup={true}/> :
-                !isNetwork ? (
+                isNetwork ? <View style={{ flex: 1 }}>
+                <FlatList
+                    ListEmptyComponent = { notData && <NetworkError/>}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refresh}
+                            onRefresh={handleRefesh}
+                        />
+                    }
+                    data={arrayResponse}
+                    keyExtractor={(item, index) => `response_${item.id}`}
+                    renderItem={item => <ItemResponse item={item.item} />
+                
+                }
+                />
+             </View> : (
                     <NetworkError /> 
                     ) 
-                : renderResponse(arrayResponse)
             }
             
         </View>

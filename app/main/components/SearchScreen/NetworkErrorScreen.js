@@ -6,25 +6,33 @@ const NetworkError = () => {
     return(
         <View>
              <Image
-                    width={MSCALE(253)}
-                    height={MSCALE(249)}
                     resizeMode={'contain'}
                     source={require('./asset/image.png')}
-                    style={{width:MSCALE(253),height:MSCALE(249),marginLeft:MSCALE(20),alignSelf:'center'}}
+                    style={{width:MSCALE(180.5),height:MSCALE(122),
+                        marginTop:MSCALE(20),alignSelf:'center'}}
                     />
-           <View style={{marginTop:MSCALE(65),marginLeft:MSCALE(57)}}>
+           <View style={{marginTop:MSCALE(34),marginLeft:MSCALE(20)}}>
                <Text style={styles.txt_hd}>
                     Không có Internet
                </Text>
                <Text style={styles.txt_content}>
                    Hãy thử:
                </Text>
-               <Text style={styles.txt_dot}>•<Text style={styles.txt_content}>  Tắt chế độ trên máy bay</Text></Text>
-               <Text style={styles.txt_dot}>•<Text style={styles.txt_content}>  Bật dữ liệu di động hoặc Wi-Fi</Text></Text>
-               <Text style={styles.txt_dot}>•<Text style={styles.txt_content}>  Kiểm tra tín hiệu trong khu vực của bạn</Text></Text>
-               <Text style={styles.txt_code}>
+               <View style={{flexDirection:'row',alignItems:'center'}}>
+                <Text style={styles.txt_dot}>•</Text>
+                <Text style={styles.txt_content}>  Tắt chế độ trên máy bay</Text>
+               </View>
+               <View style={{flexDirection:'row',alignItems:'center'}}>
+                <Text style={styles.txt_dot}>•</Text>
+                <Text style={styles.txt_content}>  Bật dữ liệu di động hoặc Wi-Fi</Text>
+               </View>
+               <View style={{flexDirection:'row',alignItems:'center'}}>
+                <Text style={styles.txt_dot}>•</Text>
+                <Text style={styles.txt_content}>  Kiểm tra tín hiệu trong khu vực của bạn</Text>
+               </View>
+               {/* <Text style={styles.txt_code}>
                    ERR_INTERNET_DISCONECETED
-               </Text>
+               </Text> */}
            </View>
         </View>
     )
@@ -32,25 +40,28 @@ const NetworkError = () => {
 const styles = StyleSheet.create({
     txt_hd:{
         fontSize:MSCALE(20),
-        fontFamily:'Roboto-Medium',
-        fontWeight:'400',
-        paddingBottom:MSCALE(15)
+        fontFamily:'OpenSans-Regular',
+        fontWeight:'600',
+        color:'#1e1e1e',
+        paddingBottom:MSCALE(30)
     },
     txt_code:{
         paddingTop:MSCALE(15),
-        fontFamily:'Roboto-Medium',
+        fontFamily:'OpenSans-Regular',
         fontWeight:'400',
         color:'grey',
     },
     txt_content:{
-        color:'grey',
-        fontFamily:'Roboto-Medium',
+        color:'#888888',
+        fontFamily:'OpenSans-Regular',
         fontWeight:'400',
-        fontSize:MSCALE(14)
+        fontSize:MSCALE(15),
+        paddingBottom:MSCALE(14)
     },
     txt_dot:{
         fontSize:MSCALE(20),
-        paddingLeft:MSCALE(15),
+        paddingLeft:MSCALE(14),
+        paddingBottom:MSCALE(15),
         color:'grey'
     }
 })

@@ -12,8 +12,10 @@ const DetailScreen = (props) => {
 
     const navigation = useNavigation()
     const urlSearch = props?.route?.params?.url
+    const domainUrl = props?.route?.params?.domain_url
+    const indexCut = domainUrl?.indexOf('/')
+    const domain = domainUrl?.slice(indexCut + 2)
     const [url, setUrl] = useState('')
-    console.log('urlSearch', urlSearch)
     // useEffect
     useEffect(() => {
         setUrl(urlSearch)
@@ -24,17 +26,15 @@ const DetailScreen = (props) => {
                 flexDirection: 'row',
                 marginTop: MSCALE(Platform.OS == 'ios' ? 56 : 24),
                 alignItems: 'center',
-                marginBottom: MSCALE(13)
+                marginBottom: MSCALE(17)
             }}>
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
                 >
                     <Image
-                        width={MSCALE(24)}
-                        height={MSCALE(24)}
                         resizeMode={'contain'}
                         source={require('./asset/back.png')}
-                        style={{ width: MSCALE(24), height: MSCALE(24), marginLeft: MSCALE(15) }}
+                        style={{ width: MSCALE(10), height: MSCALE(20), marginLeft: MSCALE(15) }}
                     />
                 </TouchableOpacity>
                 <View style={{
@@ -43,39 +43,16 @@ const DetailScreen = (props) => {
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}>
-                    {/* <FastImage style={{
-                        width: MSCALE(20),
-                        height: MSCALE(20),
-                        backgroundColor: '#f8f',
-                        marginRight: 10
-                    }} /> */}
-
                     <Text style={{
                         textAlign: 'center',
-                        fontWeight: '500',
-                        fontSize: MSCALE(18)
-                    }}>Bài viết</Text>
+                        fontFamily:'OpenSans-Regular',
+                        color:'#015cd0',
+                        fontWeight: '600',
+                        fontSize: MSCALE(19)
+                    }}>{domain}</Text>
                 </View>
                 <View style={{ width: MSCALE(24) }} />
-                {/* <View  style={{
-                            flexDirection:'row',
-                            width:MSCALE(343),
-                            height:MSCALE(36),
-                            borderRadius:MSCALE(10),
-                            marginLeft: MSCALE(20),
-                            // marginRight: MSCALE(12),
-                            // top: calc(50% - 36px/2);
-                            backgroundColor:'rgba(118, 118, 128, 0.12)'}}>
-                                <Image
-                        width={MSCALE(24)}
-                        height={MSCALE(22)}
-                        resizeMode={'contain'}
-                        source={require('./asset/search.png')}
-                        style={{ width: MSCALE(24), height: MSCALE(22), alignSelf: 'center', marginLeft: MSCALE(11) }}
-                    />
-                </View> */}
             </View>
-
         )
     }
     const renderWebview = () => {

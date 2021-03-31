@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         height: MSCALE(46.8),
         borderBottomWidth: 1,
         marginRight: MSCALE(19.5),
-        flex: 1
+        flex: 1,
     },
     imageIcon: {
         marginLeft:MSCALE(15),
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     textStyle: {
         marginHorizontal: MSCALE(12),
         fontSize: MSCALE(15),
-        fontFamily: 'OpenSans',
-        color: 'black',
+        fontFamily: 'OpenSans-Regular',
+        color: '#7d7e7e',
         flex: 1
     }
 })

@@ -16,7 +16,6 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
     // useEffect
 
     useEffect(() => {
-        
         setupData()
     }, [])
  
@@ -33,7 +32,7 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
     // function render
     const renderDetal = () => {
         return (
-            <View style={{ flex: 1, marginLeft: MSCALE(20.5),}}>
+            <View style={{ flex: 1, marginLeft: MSCALE(20.5),marginTop:MSCALE(17.3)}}>
                 <FlatList
                     style={{flex:1}}
                     data={arrayKey}
@@ -73,7 +72,7 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
             searchKeyword = keyword
         }
         await insertKeyword(searchKeyword)
-        searchKeyword != '' && navigation.navigate('ResponseScreen', { key: searchKeyword })
+        searchKeyword != '' && navigation.push('ResponseScreen', { key: searchKeyword })
         popup && closePopup()
         setupData()
     }
@@ -94,7 +93,7 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
             actionChangeText={actionChangeText} 
             actionClear={actionClear} 
             actionSearch={actionSearch} 
-            closePopup={closePopup} />
+            closePopup={popup ? closePopup : () => {}} />
             {renderDetal()}
         </View>
     )

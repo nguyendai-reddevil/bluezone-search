@@ -1,25 +1,30 @@
 
 import React, { memo, useEffect, useState, useCallback,useRef } from 'react';
-import { View, TextInput, Image, Platform, StyleSheet,TouchableOpacity,Text,Keyboard } from 'react-native';
+import { View, TextInput, Image, Platform, StyleSheet,TouchableOpacity,Text,Keyboard,ScrollView,UIManager } from 'react-native';
 import { MSCALE ,isIphoneX } from '../Reponsive';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+if (
+    Platform.OS === "android" &&
+    UIManager.setLayoutAnimationEnabledExperimental
+  ) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
 const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text}) => {
 
     const refInput = useRef()
-
-    // React.useEffect(()=>{
-    //     Keyboard.addListener('keyboardDidHide',_keyboadHide)
-    //     return ()=>{
-    //         Keyboard.removeListener('keyboardDidHide',_keyboadHide)
-    //     }
-    // },[])
+    
+    React.useEffect(()=>{
+        Keyboard.addListener('keyboardDidHide',_keyboadHide)
+        return ()=>{
+            Keyboard.removeListener('keyboardDidHide',_keyboadHide)
+        }
+    },[])
     const _keyboadHide=()=>{
         console.log('_keyboadHide')
     }
     const actionClosePopup = () => {
-        refInput.current?.blur()
-        // Keyboard.dismiss()
-        // closePopup()
+        // refInput.current?.blur()
+        Keyboard.dismiss()
+        closePopup()
         // alert('ok')
     }
     return (
@@ -31,8 +36,8 @@ const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text})
                     resizeMode={'contain'}
                     source={require('../asset/back.png')}
                     style={{
-                        width: MSCALE(12),
-                        height: MSCALE(24),
+                        width: MSCALE(10),
+                        height: MSCALE(20),
                     }}
                 />
             </TouchableOpacity>
@@ -48,7 +53,7 @@ const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text})
                     returnKeyType={'search'}
                     ref={refInput}
                     onChangeText={t => actionChangeText(t)}
-                    // autoFocus={true}
+                    autoFocus={true}
                     value={text}
                     style={styles.textStyle}
                     placeholderTextColor={'#9c9c9c'}
@@ -74,7 +79,7 @@ const styles = StyleSheet.create({
  
     containerHeader: {
         flexDirection: 'row',
-        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 40 : 33),
+        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 33 : 33),
         alignItems: 'center',
         marginLeft: MSCALE(19.8),
     },
@@ -96,7 +101,7 @@ const styles = StyleSheet.create({
     textStyle: {
         // width: MSCALE(220),
         fontSize:MSCALE(15),
-        fontFamily: 'OpenSans',
+        fontFamily: 'OpenSans-Regular',
         paddingLeft:MSCALE(5.4),
         paddingRight:MSCALE(16.9),
         flex: 1,

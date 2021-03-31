@@ -29,13 +29,15 @@ const myClient = {
   },
 };
 
-export const ApiSearch = {
-    searchKeyword: async (params) => {
+const ApiSearch = {
+    searchKeyword: (params) => {
         return myClient.get(`/medicalsearch?key_search=${params}`,
           {
             headers: {
               'Content-Type': 'application/json',
-            },
-          })
+            }
+          }
+          )
       },
 }
+export default ApiSearch
