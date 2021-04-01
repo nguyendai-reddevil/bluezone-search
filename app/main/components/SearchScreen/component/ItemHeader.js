@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     textStyle: {
         // width: MSCALE(220),
         fontSize:MSCALE(15),
-        fontFamily: 'OpenSans-Regular',
+        fontFamily: 'OpenSans-SemiBold',
         paddingLeft:MSCALE(5.4),
         paddingRight:MSCALE(16.9),
         flex: 1,

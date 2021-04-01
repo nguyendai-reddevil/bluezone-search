@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState, useMemo } from 'react';
 import { View, Text, TextInput, Image, Keyboard, RefreshControl, ActivityIndicator, Platform } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { MSCALE } from './Reponsive';
+import { MSCALE,isIphoneX } from './Reponsive';
 import { useNavigation } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import FastImage from 'react-native-fast-image';
@@ -24,7 +24,7 @@ const DetailScreen = (props) => {
         return (
             <View style={{
                 flexDirection: 'row',
-                marginTop: MSCALE(Platform.OS == 'ios' ? 56 : 24),
+                marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 40 : 43),
                 alignItems: 'center',
                 marginBottom: MSCALE(17)
             }}>

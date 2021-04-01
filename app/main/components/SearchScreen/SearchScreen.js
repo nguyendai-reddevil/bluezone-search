@@ -6,7 +6,7 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import ItemSearch from './component/ItemKeyword';
 import { getListKeyword, insertKeyword, } from '../../../core/db/SqliteDb';
 import ItemHeader from './component/ItemHeader';
-const SearchScreen = ({textSearch,popup,closePopup}) => {
+const SearchScreen = ({textSearch,popup,closePopup,clear}) => {
 
     const navigation = useNavigation()
     const [text, setText] = useState(textSearch || '')
@@ -17,6 +17,7 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
 
     useEffect(() => {
         setupData()
+        clear && setText('')
     }, [])
  
     useEffect(() => {
@@ -24,7 +25,7 @@ const SearchScreen = ({textSearch,popup,closePopup}) => {
     }, [text])
 
     useFocusEffect(
-        useCallback(() => {
+        useCallback(() => {      
             setupData(text)
         },[text])
     )

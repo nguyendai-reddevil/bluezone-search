@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState, useMemo ,useRef} from 'react';
-import { View, Text, TextInput, Image, Keyboard, RefreshControl, ActivityIndicator,
+import { View, Text, TextInput, Image, Keyboard, RefreshControl, ActivityIndicator,Dimensions,
     Platform, StyleSheet } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation,useFocusEffect } from '@react-navigation/native';
@@ -12,6 +12,8 @@ import SearchScreen from './SearchScreen';
 import FastImage from 'react-native-fast-image';
 //api
 import Api from './api/api';
+
+const {width,height} = Dimensions.get('window')
 const dataTest = [
     {
         id: 1,
@@ -42,6 +44,7 @@ const ResponseScreen = (props) => {
     const [refresh,setRefresh] = useState(false)
     const [loadmore,setLoadmore] = useState(false)
     const [arrayResponse,setArrayResponse] = useState([])
+    const [clear,setClear] = useState(false)
     const [notData,setNotData] = useState(false)
     // useEffect
     useEffect(() => {
@@ -145,7 +148,8 @@ const ResponseScreen = (props) => {
     }
 
     const actionClear = () => {
-        setText('')
+        // setText('')
+        setClear(true)
         setShowSearch(true)
     }
     //call api search
@@ -165,6 +169,16 @@ const ResponseScreen = (props) => {
      
     }
 
+    const renderNoData = () => {
+        return(
+            <View style={{alignItems:'center',justifyContent:'center',width:width,height:height/2}}>
+                <Text style={{color:'#7d7e7e'}}>
+                    Không có kết quả tìm kiếm phù hợp
+                </Text>
+            </View>
+        )
+    }
+
     const handleRefesh = () => {
         setRefresh(true)
         actionSearch()
@@ -174,10 +188,10 @@ const ResponseScreen = (props) => {
         <View style={styles.container}>
              {!showSearch && renderHeader()}
              {
-                showSearch ? <SearchScreen closePopup={closePopup} textSearch = {text} popup={true}/> :
+                showSearch ? <SearchScreen closePopup={closePopup} clear={clear} textSearch = {text} popup={true}/> :
                 isNetwork ? <View style={{ flex: 1 }}>
                 <FlatList
-                    ListEmptyComponent = { notData && <NetworkError/>}
+                    ListEmptyComponent = { notData && renderNoData()}
                     refreshControl={
                         <RefreshControl
                             refreshing={refresh}

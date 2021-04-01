@@ -72,8 +72,7 @@ const styles = StyleSheet.create({
     txt_title: {
         paddingTop: MSCALE(15),
         paddingRight:MSCALE(9),
-        fontFamily: 'OpenSans-Regular',
-        fontWeight: '600',
+        fontFamily: 'OpenSans-SemiBold',
         fontSize: MSCALE(18),
         color: '#015cd0',
         flex: 1,
