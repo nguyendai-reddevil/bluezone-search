@@ -16,6 +16,7 @@ import Api from './api/api';
 const {width,height} = Dimensions.get('window')
 
 export const Header = memo(({actionSetTextSearch,actionClear,text}) => {
+    const navigation = useNavigation()
     return (
         <View style={styles.containerHeader}>
             <TouchableOpacity style={{ marginLeft: MSCALE(19.8), }}

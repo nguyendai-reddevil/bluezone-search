@@ -376,7 +376,7 @@ class App extends React.Component {
             ) : !isHome ? (
               <Stack.Navigator
               screenOptions={{
-                gestureEnabled:true,
+                // gestureEnabled:true,
                 gestureDirection:'horizontal',
                 cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS
               }}
