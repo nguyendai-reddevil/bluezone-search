@@ -22,9 +22,14 @@ const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text})
         console.log('_keyboadHide')
     }
     const actionClosePopup = () => {
+        try {
+            Keyboard.dismiss()
+            closePopup()
+        } catch (error) {
+            
+        }
         // refInput.current?.blur()
-        Keyboard.dismiss()
-        closePopup()
+     
         // alert('ok')
     }
     return (
@@ -57,7 +62,7 @@ const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text})
                     value={text}
                     style={styles.textStyle}
                     placeholderTextColor={'#9c9c9c'}
-                    placeholder={'Tra cứu thông tin y tế ...'}
+                    placeholder={'Tra cứu thông tin y tế...'}
                 />
                 <TouchableOpacity
                     onPress={actionClear}
@@ -76,10 +81,9 @@ const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text})
 }
 
 const styles = StyleSheet.create({
- 
     containerHeader: {
         flexDirection: 'row',
-        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 33 : 33),
+        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 33 : 22),
         alignItems: 'center',
         marginLeft: MSCALE(19.8),
     },
@@ -101,14 +105,14 @@ const styles = StyleSheet.create({
     textStyle: {
         // width: MSCALE(220),
         fontSize:MSCALE(15),
-        fontFamily: 'OpenSans-SemiBold',
+        fontFamily: 'OpenSans-Regular',
         paddingLeft:MSCALE(5.4),
         paddingRight:MSCALE(16.9),
         flex: 1,
         height: MSCALE(Platform.OS == 'ios' ? MSCALE(22) : MSCALE(80)),
         alignSelf: 'center',
         color: '#000',
-        marginLeft: MSCALE(7),
+        // marginLeft: MSCALE(7),
     },
     containerClear: {
         alignItems: 'flex-end',

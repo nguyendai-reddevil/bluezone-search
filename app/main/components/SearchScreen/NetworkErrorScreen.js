@@ -1,6 +1,6 @@
 import React,{ memo } from 'react';
-import { View,Text,TextInput,Image,StyleSheet } from 'react-native';
-import { MSCALE } from './Reponsive';
+import { View,Text,TextInput,Image,StyleSheet,StatusBar } from 'react-native';
+import { FS, MSCALE } from './Reponsive';
 
 const NetworkError = () => {
     return(
@@ -9,13 +9,13 @@ const NetworkError = () => {
                     resizeMode={'contain'}
                     source={require('./asset/image.png')}
                     style={{width:MSCALE(180.5),height:MSCALE(122),
-                        marginTop:MSCALE(20),alignSelf:'center'}}
+                        marginTop:MSCALE(14),alignSelf:'center'}}
                     />
-           <View style={{marginTop:MSCALE(34),marginLeft:MSCALE(20)}}>
+           <View style={{marginTop:MSCALE(36),marginLeft:MSCALE(20)}}>
                <Text style={styles.txt_hd}>
                     Không có Internet
                </Text>
-               <Text style={styles.txt_content}>
+               <Text style={[styles.txt_content,{paddingTop:MSCALE(2)}]}>
                    Hãy thử:
                </Text>
                <View style={{flexDirection:'row',alignItems:'center'}}>
@@ -39,9 +39,9 @@ const NetworkError = () => {
 }
 const styles = StyleSheet.create({
     txt_hd:{
-        fontSize:MSCALE(20),
-        fontFamily:'OpenSans-Regular',
-        fontWeight:'600',
+        fontSize:FS(20),
+        fontFamily:'OpenSans-SemiBold',
+        // fontWeight:'600',
         color:'#1e1e1e',
         paddingBottom:MSCALE(30)
     },
@@ -55,13 +55,13 @@ const styles = StyleSheet.create({
         color:'#888888',
         fontFamily:'OpenSans-Regular',
         fontWeight:'400',
-        fontSize:MSCALE(15),
-        paddingBottom:MSCALE(14)
+        fontSize:FS(15),
+        paddingBottom:MSCALE(7)
     },
     txt_dot:{
-        fontSize:MSCALE(20),
-        paddingLeft:MSCALE(14),
-        paddingBottom:MSCALE(15),
+        fontSize:FS(28),
+        paddingBottom:MSCALE(7),
+        textAlign:'center',
         color:'grey'
     }
 })

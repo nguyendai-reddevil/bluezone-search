@@ -51,7 +51,6 @@ const ResponseScreen = (props) => {
         checkWifi()
     }, [])
     useEffect(() => {
-
         actionSearch()
     }, [])
     
@@ -132,7 +131,12 @@ const ResponseScreen = (props) => {
         setShowSearch(true)
     }
     const closePopup = () => {
-        setTimeout(() => setShowSearch(false),Platform.OS == 'ios' ? 0 : 0) 
+        try {
+            setTimeout(() => setShowSearch(false),Platform.OS == 'ios' ? 0 : 0) 
+        } catch (error) {
+            
+        }
+       
     }
 
     // function handling
@@ -164,7 +168,7 @@ const ResponseScreen = (props) => {
                 setArrayResponse(res.data.response)
             }
         } catch (error) {
-            
+            setNotData(true)
         }
      
     }
@@ -189,7 +193,7 @@ const ResponseScreen = (props) => {
              {!showSearch && renderHeader()}
              {
                 showSearch ? <SearchScreen closePopup={closePopup} clear={clear} textSearch = {text} popup={true}/> :
-                isNetwork ? <View style={{ flex: 1 }}>
+               isNetwork ? <View style={{ flex: 1 }}>
                 <FlatList
                     ListEmptyComponent = { notData && renderNoData()}
                     refreshControl={
@@ -204,7 +208,8 @@ const ResponseScreen = (props) => {
                 
                 }
                 />
-             </View> : (
+             </View> : 
+             (
                     <NetworkError /> 
                     ) 
             }
@@ -216,11 +221,11 @@ const ResponseScreen = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
     containerHeader: {
         flexDirection: 'row',
-        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 40 : 24),
+        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 33 : 22),
         marginBottom: MSCALE(16),
         alignItems: 'center'
     },

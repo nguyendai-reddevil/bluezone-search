@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState, useMemo } from 'react';
-import { View, Text, TextInput, Image, Keyboard, RefreshControl, ActivityIndicator, Platform } from 'react-native';
+import { View, Text, TextInput, Image, Keyboard, RefreshControl, ActivityIndicator, Platform,StatusBar } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { MSCALE,isIphoneX } from './Reponsive';
 import { useNavigation } from '@react-navigation/native';

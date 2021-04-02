@@ -1,7 +1,7 @@
 export const convertToSlug = (str) => {
     // Chuyển hết sang chữ thường
     str = str.toLowerCase();
-
+    console.log('strstrstrstrstrstrstr',str)
     // xóa dấu
     str = str.replace(/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/g, 'a');
     str = str.replace(/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/g, 'e');
@@ -15,7 +15,7 @@ export const convertToSlug = (str) => {
     str = str.replace(/([^0-9a-z-\s])/g, '');
 
     // Xóa khoảng trắng thay bằng ký tự -
-    str = str.replace(/(\s+)/g, '-');
+    // str = str.replace(/(\s+)/g, '-');
 
     // xóa phần dự - ở đầu
     str = str.replace(/^-+/g, '');

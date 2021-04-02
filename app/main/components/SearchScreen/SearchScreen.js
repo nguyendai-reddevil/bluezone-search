@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState, useCallback } from 'react';
-import { View, TextInput, Image, Platform, StyleSheet,Text ,Keyboard} from 'react-native';
+import { View, TextInput, Image, Platform, StyleSheet,Text ,Keyboard,StatusBar} from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { MSCALE ,isIphoneX} from './Reponsive';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -41,7 +41,9 @@ const SearchScreen = ({textSearch,popup,closePopup,clear}) => {
             
                     renderItem={(item) =>
                         <ItemSearch
+                            popup={popup}
                             item={item.item}
+                            keyword={text}
                             onPress={chooseItem} />}
                 />
             </View>
@@ -104,11 +106,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white'
-    },
-    containerHeader: {
-        flexDirection: 'row',
-        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 40 : 24),
-        alignItems: 'center'
     },
     containerInput: {
         flexDirection: 'row',
