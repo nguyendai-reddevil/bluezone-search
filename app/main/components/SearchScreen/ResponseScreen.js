@@ -14,25 +14,71 @@ import FastImage from 'react-native-fast-image';
 import Api from './api/api';
 
 const {width,height} = Dimensions.get('window')
-const dataTest = [
-    {
-        id: 1,
-        web_url: 'https://www.24h.com.vn',
-        post_url: 'https://www.24h.com.vn/nguoi-mau-hoa-hau/nu-than-tuong-gay-thot-tim-vi-ao-tre-nai-va-luat-ngam-mac-chi-ho-1-bo-phan-c214a1232603.html',
-        title: 'Thời trang kpop',
-        description: 'Cô bắt đầu công việc diễn xuất từ trước khi bước chân vào tiểu học. Vào năm 1998, khi chỉ mới 5 tuổi,',
-        img: null
-    },
-    {
-        id: 2,
-        web_url: 'https://www.24h.com.vn',
-        post_url: 'https://www.24h.com.vn/nguoi-mau-hoa-hau/nu-than-tuong-gay-thot-tim-vi-ao-tre-nai-va-luat-ngam-mac-chi-ho-1-bo-phan-c214a1232603.html',
-        title: 'Thời trang kpop',
-        description: 'Còn Park Eun Bin thì như thế nào? Thoạt nhìn, cô ấy có vẻ là một người gặp nhiều may mắn. Cô bắt đầu công việc diễn xuất từ trước khi bước chân vào tiểu học. Vào năm 1998, khi chỉ mới 5 tuổi, Park Eun Bin đã mơ ước trở thành một diễn viên.',
-        img: 'https://vfan-phinf.pstatic.net/20200305_30/15833824891252XO5R_JPEG/ebba68f6-ef44-4ba7-99a4-bbd149a98418.jpg?type=e1920'
-    },
- 
-]
+
+export const Header = memo(({actionSetTextSearch,actionClear,text}) => {
+    return (
+        <View style={styles.containerHeader}>
+            <TouchableOpacity style={{ marginLeft: MSCALE(19.8), }}
+                onPress={() => navigation.goBack()}>
+                <Image
+                    resizeMode={'contain'}
+                    source={require('./asset/back.png')}
+                    style={{
+                        width: MSCALE(10),
+                        height: MSCALE(20),
+                    }}
+                />
+            </TouchableOpacity>
+
+            <View style={styles.containerInput}>
+                <Image
+                    resizeMode={'contain'}
+                    source={require('./asset/search.png')}
+                    style={styles.imageIcon}
+                />
+
+                <View style={styles.containerText}>
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={actionSetTextSearch}
+                        style={{
+                            justifyContent: 'center', 
+                            paddingLeft:MSCALE(7),
+                            paddingRight:MSCALE(16.9),
+                        }}>
+                        <Text
+                            numberOfLines={1}
+                            style={{
+                                fontSize: MSCALE(15),
+                                fontWeight: '400',
+                            }}>
+                            {text}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity
+                    onPress={actionClear}
+                    style={{
+                        width: MSCALE(20),
+                        height: MSCALE(36),
+                        justifyContent: 'center',
+                        marginHorizontal: MSCALE(16)
+                    }}>
+                    <FastImage
+                        resizeMode={'contain'}
+                        source={require('./asset/cancel.png')}
+                        style={{
+                            width: MSCALE(12), height: MSCALE(12)
+                        }}
+                    />
+                </TouchableOpacity>
+
+            </View>
+        </View>
+
+    )
+})
 const ResponseScreen = (props) => {
 
     const navigation = useNavigation()
@@ -62,70 +108,7 @@ const ResponseScreen = (props) => {
       );
     // function render
 
-    const renderHeader = () => {
-        return (
-            <View style={styles.containerHeader}>
-                <TouchableOpacity style={{ marginLeft: MSCALE(19.8), }}
-                    onPress={() => navigation.goBack()}>
-                    <Image
-                        resizeMode={'contain'}
-                        source={require('./asset/back.png')}
-                        style={{
-                            width: MSCALE(10),
-                            height: MSCALE(20),
-                        }}
-                    />
-                </TouchableOpacity>
-
-                <View style={styles.containerInput}>
-                    <Image
-                        resizeMode={'contain'}
-                        source={require('./asset/search.png')}
-                        style={styles.imageIcon}
-                    />
-
-                    <View style={styles.containerText}>
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                            onPress={actionSetTextSearch}
-                            style={{
-                                justifyContent: 'center', 
-                                paddingLeft:MSCALE(7),
-                                paddingRight:MSCALE(16.9),
-                            }}>
-                            <Text
-                                numberOfLines={1}
-                                style={{
-                                    fontSize: MSCALE(15),
-                                    fontWeight: '400',
-                                }}>
-                                {text}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <TouchableOpacity
-                        onPress={actionClear}
-                        style={{
-                            width: MSCALE(20),
-                            height: MSCALE(36),
-                            justifyContent: 'center',
-                            marginHorizontal: MSCALE(16)
-                        }}>
-                        <FastImage
-                            resizeMode={'contain'}
-                            source={require('./asset/cancel.png')}
-                            style={{
-                                width: MSCALE(12), height: MSCALE(12)
-                            }}
-                        />
-                    </TouchableOpacity>
-
-                </View>
-            </View>
-
-        )
-    }
+    
     const actionSetTextSearch = () => {
         console.log('nanananannaviaivaiviava',props,navigation)
         setShowSearch(true)
@@ -190,7 +173,7 @@ const ResponseScreen = (props) => {
 
     return (
         <View style={styles.container}>
-             {!showSearch && renderHeader()}
+             {!showSearch && <Header actionClear={actionClear} text={text} actionSetTextSearch={actionSetTextSearch}/>}
              {
                 showSearch ? <SearchScreen closePopup={closePopup} clear={clear} textSearch = {text} popup={true}/> :
                isNetwork ? <View style={{ flex: 1 }}>
