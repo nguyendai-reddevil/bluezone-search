@@ -16,19 +16,6 @@ const ItemSearch = ({ item, onPress ,keyword,popup }) => {
         
     // }
 
-    let keywordDataConvert = item?.keyword?.trim()?.toLowerCase()
-    let inputConvert = keyword?.trim()?.toLowerCase()
-    let lengKeyword = keyword?.length
-    
-    let indexKeyWord = item?.keyword.indexOf(inputConvert)
-
-    let firstKeyword = indexKeyWord >= 0 && keywordDataConvert.slice(0,indexKeyWord)
-    let lastKeyword = indexKeyWord >= 0 && keywordDataConvert.slice(indexKeyWord+lengKeyword)
-    // let keyWordCut = indexKeyWord >= 0 && item?.keyword?.slice(indexKeyWord,indexKeyWord+lengKeyword)
-
-    // const actionBoldText = (text) => {
-    //     text.split()
-    // }
     return (
         <TouchableOpacity
             onPress={onSelectValue}
@@ -39,18 +26,11 @@ const ItemSearch = ({ item, onPress ,keyword,popup }) => {
                 resizeMode={'contain'}
                 style={styles.imageIcon}
             />
-           {keyword && popup ? <Text
-                numberOfLines={1}
-                style={[styles.textStyle]}>
-                    <Text>{firstKeyword}</Text>
-                    <Text style={{fontFamily:'OpenSans-Bold'}}>{keyword.toLowerCase()}</Text> 
-                     <Text>{lastKeyword}</Text> 
-                {/* {item?.keyword} */}
-            </Text> : <Text
+           <Text
                 numberOfLines={1}
                 style={[styles.textStyle]}>
                 {item?.keyword}
-            </Text>}
+            </Text>
 
             <FastImage
                 source={require('../asset/choose.png')}

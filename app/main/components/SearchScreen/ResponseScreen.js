@@ -188,7 +188,7 @@ const ResponseScreen = (props) => {
                     }
                     data={arrayResponse}
                     keyExtractor={(item, index) => `response_${item.id}`}
-                    renderItem={item => <ItemResponse item={item.item} />
+                    renderItem={item => <ItemResponse keyword = {text} item={item.item} />
                 
                 }
                 />

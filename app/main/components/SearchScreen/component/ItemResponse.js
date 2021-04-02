@@ -1,9 +1,10 @@
 import React, { memo } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import Highlighter from 'react-native-highlight-words';
 import { useNavigation } from '@react-navigation/native';
 import { MSCALE } from '../Reponsive';
 const host = 'https://www.google.com/s2/favicons?sz=128&domain='
-const ItemResponse = ({ item }) => {
+const ItemResponse = ({ item ,keyword}) => {
 
     const navigation = useNavigation()
     console.log('ITMEMEMEM', item)
@@ -19,19 +20,27 @@ const ItemResponse = ({ item }) => {
                     <View style={{ flexDirection: 'row', marginTop: MSCALE(16), alignItems: 'center' }}>
                         <Image
                             source={{ uri: iconWeb }}
-                            style={{ width: MSCALE(15), height: MSCALE(15), marginRight: MSCALE(10) }}
+                            style={{width: MSCALE(15), height: MSCALE(15), marginRight: MSCALE(10)}}
                         />
                         <Text style={styles.txt_url}>{domain}</Text>
+                       
                     </View>
-
-                    <Text
-                        numberOfLines={2}
-                        style={styles.txt_title}>{item.title}</Text>
+                             <Highlighter
+                                numberOfLines={2}
+                                style={styles.txt_title}
+                                highlightStyle={{fontFamily:'OpenSans-Bold'}}
+                                searchWords={[`${keyword}`]}
+                                textToHighlight={item.title}
+                                />
                     <View style={{ flexDirection: 'row', paddingBottom: MSCALE(15), marginTop: MSCALE(15), }}>
                         <View style={{width:item.img ?  MSCALE(183) : '100%'}}>
-                            <Text
-                                numberOfLines={4}
-                                style={[styles.txt_detail, ]}>{item?.description}</Text>
+                                 <Highlighter
+                                 numberOfLines={4}
+                                style={styles.txt_detail}
+                                highlightStyle={{fontFamily:'OpenSans-Bold'}}
+                                searchWords={[`${keyword}`]}
+                                textToHighlight={item?.description}
+                                />
                         </View>
                        
                         {item?.img && <Image
@@ -89,4 +98,4 @@ const styles = StyleSheet.create({
         marginTop:MSCALE(10)
     }
 })
-export default memo(ItemResponse)
+export default ItemResponse
