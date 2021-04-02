@@ -24,7 +24,7 @@ const DetailScreen = (props) => {
         return (
             <View style={{
                 flexDirection: 'row',
-                marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 40 : 43),
+                marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 33 : 22),
                 alignItems: 'center',
                 marginBottom: MSCALE(17)
             }}>

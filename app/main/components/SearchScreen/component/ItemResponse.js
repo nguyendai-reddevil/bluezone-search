@@ -8,7 +8,6 @@ const ItemResponse = ({ item }) => {
     const navigation = useNavigation()
     console.log('ITMEMEMEM', item)
     const indexCut = item?.web_url?.indexOf('/')
-    console.log('indexCutindexCutindexCutindexCutindexCut', indexCut)
     const domain = item?.web_url?.slice(indexCut + 2)
     const iconWeb = host + domain
     return (
