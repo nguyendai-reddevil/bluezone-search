@@ -33,9 +33,9 @@ const ItemResponse = ({ item ,keyword}) => {
                                 textToHighlight={item.title}
                                 />
                     <View style={{ flexDirection: 'row', paddingBottom: MSCALE(15), marginTop: MSCALE(15), }}>
-                        <View style={{width:item.img ?  MSCALE(183) : '100%'}}>
-                                 <Highlighter
-                                 numberOfLines={4}
+                        <View style={{width:item?.image_url ?  MSCALE(183) : '100%'}}>
+                                <Highlighter
+                                numberOfLines={4}
                                 style={styles.txt_detail}
                                 highlightStyle={{fontFamily:'OpenSans-Bold'}}
                                 searchWords={[`${keyword}`]}
@@ -43,8 +43,8 @@ const ItemResponse = ({ item ,keyword}) => {
                                 />
                         </View>
                        
-                        {item?.img && <Image
-                            source={{ uri: item.img }}
+                        {item?.image_url && <Image
+                            source={{ uri: item.image_url }}
                             style={styles.img_thumb}
                         />}
                     </View>
@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     txt_detail: {
-        fontWeight: '400',
         fontFamily: 'OpenSans-Regular',
         fontSize: MSCALE(15),
         color: '#888888',
