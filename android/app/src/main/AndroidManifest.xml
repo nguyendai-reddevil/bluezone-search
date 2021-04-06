@@ -20,8 +20,11 @@
             android:protectionLevel="signature" />
     <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
     <!-- < Only if you're using GCM or localNotificationSchedule() > -->
-
+     <!-- < fix bug not fetch data http android android:usesCleartextTraffic="true"   > -->
     <application
+
+            android:usesCleartextTraffic="true" 
+
             android:name=".MainApplication"
             android:label="@string/app_name"
             android:icon="@mipmap/icon_bluezone"
