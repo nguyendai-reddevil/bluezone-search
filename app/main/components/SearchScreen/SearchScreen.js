@@ -12,7 +12,7 @@ const SearchScreen = ({textSearch,popup,closePopup,clear}) => {
     const [text, setText] = useState(textSearch || '')
     const [arrayKey, setArrayKey] = useState([])
     const [refresh, setRefresh] = useState(false)
-    
+    const [firtscreen,setFirtScreen] = useState(true)
     // useEffect
 
     useEffect(() => {
@@ -27,7 +27,8 @@ const SearchScreen = ({textSearch,popup,closePopup,clear}) => {
     useFocusEffect(
         useCallback(() => {      
             setupData(text)
-        },[text])
+            setFirtScreen(true)
+        },[text,firtscreen])
     )
 
     // function render
@@ -77,6 +78,10 @@ const SearchScreen = ({textSearch,popup,closePopup,clear}) => {
         await insertKeyword(searchKeyword)
         searchKeyword != '' && navigation.push('ResponseScreen', { key: searchKeyword })
         popup && closePopup()
+
+        setFirtScreen(false)
+        
+        setText('')
         setupData()
     }
 
@@ -92,6 +97,7 @@ const SearchScreen = ({textSearch,popup,closePopup,clear}) => {
         <View style={styles.container}>
             {/* {renderHeader()} */}
             <ItemHeader 
+            firtscreen = {firtscreen}
             text={text}
             actionChangeText={actionChangeText} 
             actionClear={actionClear} 

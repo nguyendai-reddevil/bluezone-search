@@ -84,7 +84,6 @@ const ResponseScreen = (props) => {
 
     const navigation = useNavigation()
     const keySearch = props?.route?.params?.key
-    console.log('propspropsprops',props)
     const [text,setText] = useState(keySearch || '')
     const [showSearch,setShowSearch] = useState(false)
     const [isNetwork,setIsNetwork] = useState(true)
@@ -115,12 +114,7 @@ const ResponseScreen = (props) => {
         setShowSearch(true)
     }
     const closePopup = () => {
-        try {
-            setTimeout(() => setShowSearch(false),Platform.OS == 'ios' ? 0 : 0) 
-        } catch (error) {
-            
-        }
-       
+        setShowSearch(false)
     }
 
     // function handling
@@ -144,7 +138,6 @@ const ResponseScreen = (props) => {
     const actionSearch = async () => {
         try {   
             const res = await Api.searchKeyword(text)
-            console.log('resresresresresresresres',res.data.response)
             setRefresh(false)
             if(res.data.response == 0){
                 setNotData(true)
@@ -176,7 +169,7 @@ const ResponseScreen = (props) => {
         <View style={styles.container}>
              {!showSearch && <Header actionClear={actionClear} text={text} actionSetTextSearch={actionSetTextSearch}/>}
              {
-                showSearch ? <SearchScreen closePopup={closePopup} clear={clear} textSearch = {text} popup={true}/> :
+               showSearch ? <SearchScreen closePopup={closePopup} clear={clear} textSearch = {text} popup={true}/> :
                isNetwork ? <View style={{ flex: 1 }}>
                 <FlatList
                     ListEmptyComponent = { notData && renderNoData()}

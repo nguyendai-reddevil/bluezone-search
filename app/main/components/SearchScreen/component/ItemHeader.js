@@ -2,40 +2,32 @@
 import React, { memo, useEffect, useState, useCallback,useRef } from 'react';
 import { View, TextInput, Image, Platform, StyleSheet,TouchableOpacity,Text,Keyboard,ScrollView,UIManager } from 'react-native';
 import { MSCALE ,isIphoneX } from '../Reponsive';
-if (
-    Platform.OS === "android" &&
-    UIManager.setLayoutAnimationEnabledExperimental
-  ) {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
-const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text}) => {
+
+const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text,firtscreen}) => {
 
     const refInput = useRef()
-    
-    React.useEffect(()=>{
-        Keyboard.addListener('keyboardDidHide',_keyboadHide)
-        return ()=>{
-            Keyboard.removeListener('keyboardDidHide',_keyboadHide)
-        }
-    },[])
-    const _keyboadHide=()=>{
-        console.log('_keyboadHide')
-    }
+    console.log('firtscreenfirtscreenfirtscreen',firtscreen)
+    useEffect(() => {
+        // firtscreen && refInput?.current.focus()
+    })
     const actionClosePopup = () => {
         try {
-            Keyboard.dismiss()
             closePopup()
         } catch (error) {
             
         }
-        // refInput.current?.blur()
-     
-        // alert('ok')
     }
     return (
         <View style={styles.containerHeader}>
             <TouchableOpacity
                 onPress={actionClosePopup}
+                style={{
+                    alignItems: 'flex-start',
+                    justifyContent: 'center',
+                    width:MSCALE(22),
+                    height:MSCALE(40),
+                    marginRight: MSCALE(-10)
+                }}
             >
                 <Image
                     resizeMode={'contain'}
@@ -43,6 +35,8 @@ const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text})
                     style={{
                         width: MSCALE(10),
                         height: MSCALE(20),
+                        // paddingHorizontal:MSCALE(10),
+                        // paddingVertical:MSCALE(10)
                     }}
                 />
             </TouchableOpacity>
@@ -62,7 +56,7 @@ const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text})
                     value={text}
                     style={styles.textStyle}
                     placeholderTextColor={'#9c9c9c'}
-                    placeholder={'Tra cứu thông tin y tế...'}
+                    placeholder={'Tra cứu thông tin Y tế...'}
                 />
                 <TouchableOpacity
                     onPress={actionClear}
@@ -70,7 +64,7 @@ const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text})
                     <Image
                         resizeMode={'contain'}
                         source={require('../asset/cancel.png')}
-                        style={{ width: MSCALE(12), height: MSCALE(12) }}
+                        style={{ width: MSCALE(12), height: MSCALE(12),paddingHorizontal:MSCALE(12) }}
                     />
                 </TouchableOpacity>
 
@@ -83,7 +77,7 @@ const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text})
 const styles = StyleSheet.create({
     containerHeader: {
         flexDirection: 'row',
-        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 33 : 22),
+        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 40 : 22),
         alignItems: 'center',
         marginLeft: MSCALE(19.8),
     },
@@ -116,6 +110,7 @@ const styles = StyleSheet.create({
     },
     containerClear: {
         alignItems: 'flex-end',
+        // backgroundColor:'red',
         justifyContent: 'center',
         marginRight: MSCALE(16.9)
     }

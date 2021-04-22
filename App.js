@@ -23,7 +23,7 @@ import React from 'react';
 import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
-
+import { Text } from "react-native";
 // Components
 import LoadingScreen from './app/main/components/LoadingScreen';
 import Home from './app/main/components/MainScreen';
@@ -45,7 +45,7 @@ import RegisterInfomation from './app/main/components/RegisterInfomationScreen';
 import ContactHistory from './app/main/components/ContactHistoryScreen';
 // import ScanScreen from './app/main/components/ScanScreen';
 import FAQScreen from './app/main/components/FAQScreen';
-
+import { MSCALE } from './app/main/components/SearchScreen/Reponsive';
 import ContextProvider from './LanguageContext';
 import LanguageProvider from './app/base/LanguageProvider';
 import {translationMessages} from './app/i18n';
@@ -376,11 +376,14 @@ class App extends React.Component {
             ) : !isHome ? (
               <Stack.Navigator
               screenOptions={{
-                // gestureEnabled:true,
+                gestureEnabled:true,
+                gestureResponseDistance:{
+                  horizontal:MSCALE(10),
+                  // vertical:10
+                },
                 gestureDirection:'horizontal',
                 cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS
-              }}
-            
+              }}           
                 id="Welcome"
                 headerMode="none"
                 mode="card"
