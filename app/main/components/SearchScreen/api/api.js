@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseHost = 'http://14.248.94.94:9200'
+const baseHost = 'http://113.190.241.249:9200'
 const AppConfig = {
     axios: {
         baseURL: `${baseHost}`,
