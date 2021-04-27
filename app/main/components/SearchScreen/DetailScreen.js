@@ -24,17 +24,24 @@ const DetailScreen = (props) => {
         return (
             <View style={{
                 flexDirection: 'row',
-                marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 33 : 22),
+                marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 40 : 22),
                 alignItems: 'center',
-                marginBottom: MSCALE(17)
+                marginBottom: MSCALE(16)
             }}>
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
+                    style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width:MSCALE(25),
+                        height:MSCALE(40),
+                        marginLeft:MSCALE(15)
+                    }}
                 >
                     <Image
                         resizeMode={'contain'}
                         source={require('./asset/back.png')}
-                        style={{ width: MSCALE(10), height: MSCALE(20), marginLeft: MSCALE(15) }}
+                        style={{ width: MSCALE(10), height: MSCALE(20) }}
                     />
                 </TouchableOpacity>
                 <View style={{
@@ -45,9 +52,8 @@ const DetailScreen = (props) => {
                 }}>
                     <Text style={{
                         textAlign: 'center',
-                        fontFamily:'OpenSans-Regular',
+                        fontFamily:'OpenSans-Bold',
                         color:'#015cd0',
-                        fontWeight: '600',
                         fontSize: MSCALE(19)
                     }}>{domain}</Text>
                 </View>

@@ -6,9 +6,10 @@ import { MSCALE ,isIphoneX } from '../Reponsive';
 const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text,firtscreen}) => {
 
     const refInput = useRef()
-    console.log('firtscreenfirtscreenfirtscreen',firtscreen)
     useEffect(() => {
-        // firtscreen && refInput?.current.focus()
+        firtscreen && setTimeout(() => {
+            refInput?.current.focus()
+        },200) 
     })
     const actionClosePopup = () => {
         try {

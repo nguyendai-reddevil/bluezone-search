@@ -103,6 +103,7 @@ const ResponseScreen = (props) => {
 
     useFocusEffect(
         React.useCallback(() => {
+            
           setShowSearch(false)
         },[])
       );
@@ -132,7 +133,8 @@ const ResponseScreen = (props) => {
     const actionClear = () => {
         // setText('')
         setClear(true)
-        setShowSearch(true)
+        // setShowSearch(true)
+        navigation.navigate('SearchScreen',{textSearch:''})
     }
     //call api search
     const actionSearch = async () => {
@@ -202,7 +204,7 @@ const styles = StyleSheet.create({
     },
     containerHeader: {
         flexDirection: 'row',
-        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 33 : 22),
+        marginTop: MSCALE(Platform.OS == 'ios' ? isIphoneX() ? 56 : 40 : 22),
         marginBottom: MSCALE(16),
         alignItems: 'center'
     },

@@ -76,7 +76,7 @@ const SearchScreen = ({textSearch,popup,closePopup,clear}) => {
             searchKeyword = keyword
         }
         await insertKeyword(searchKeyword)
-        searchKeyword != '' && navigation.push('ResponseScreen', { key: searchKeyword })
+        searchKeyword != '' && navigation.push('ResponseScreen', { key: searchKeyword})
         popup && closePopup()
 
         setFirtScreen(false)
