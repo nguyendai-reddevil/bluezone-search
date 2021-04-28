@@ -134,7 +134,7 @@ const ResponseScreen = (props) => {
         // setText('')
         setClear(true)
         // setShowSearch(true)
-        navigation.navigate('SearchScreen',{textSearch:''})
+        navigation.navigate('SearchScreen')
     }
     //call api search
     const actionSearch = async () => {

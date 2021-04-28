@@ -7,13 +7,11 @@ const ItemHeader = ({actionChangeText,actionClear,actionSearch,closePopup,text,f
 
     const refInput = useRef()
     useEffect(() => {
-        firtscreen && setTimeout(() => {
-            refInput?.current.focus()
-        },200) 
-    })
+        firtscreen && refInput?.current.focus()
+    },[firtscreen])
     const actionClosePopup = () => {
         try {
-            closePopup()
+             closePopup()
         } catch (error) {
             
         }
