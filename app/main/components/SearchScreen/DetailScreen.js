@@ -35,7 +35,7 @@ const DetailScreen = (props) => {
                         justifyContent: 'center',
                         width:MSCALE(25),
                         height:MSCALE(40),
-                        marginLeft:MSCALE(15)
+                        marginLeft:MSCALE(14)
                     }}
                 >
                     <Image

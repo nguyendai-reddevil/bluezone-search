@@ -6,7 +6,7 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import ItemSearch from './component/ItemKeyword';
 import { getListKeyword, insertKeyword, } from '../../../core/db/SqliteDb';
 import ItemHeader from './component/ItemHeader';
-const SearchScreen = ({textSearch,popup,closePopup,clear}) => {
+const SearchScreen = ({textSearch,popup,closePopup,clear,setTextSearch}) => {
 
     const navigation = useNavigation()
     const [text, setText] = useState(textSearch || '')
@@ -76,7 +76,7 @@ const SearchScreen = ({textSearch,popup,closePopup,clear}) => {
             searchKeyword = keyword
         }
         await insertKeyword(searchKeyword)
-        searchKeyword != '' && navigation.push('ResponseScreen', { key: searchKeyword})
+        popup ? setTextSearch(searchKeyword) : searchKeyword != '' && navigation.navigate('ResponseScreen', { key: searchKeyword})
         popup && closePopup()
 
         setFirtScreen(false)

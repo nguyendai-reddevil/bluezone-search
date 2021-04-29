@@ -84,6 +84,7 @@ const ResponseScreen = (props) => {
 
     const navigation = useNavigation()
     const keySearch = props?.route?.params?.key
+    console.log('proproprprprprp',keySearch)
     const [text,setText] = useState(keySearch || '')
     const [showSearch,setShowSearch] = useState(false)
     const [isNetwork,setIsNetwork] = useState(true)
@@ -94,11 +95,12 @@ const ResponseScreen = (props) => {
     const [notData,setNotData] = useState(false)
     // useEffect
     useEffect(() => {
+        // setText(keySearch)
         checkWifi()
     }, [])
     useEffect(() => {
         actionSearch()
-    }, [])
+    }, [showSearch])
     
 
     useFocusEffect(
@@ -111,8 +113,8 @@ const ResponseScreen = (props) => {
 
     
     const actionSetTextSearch = () => {
-        console.log('nanananannaviaivaiviava',props,navigation)
         setShowSearch(true)
+        
     }
     const closePopup = () => {
         setShowSearch(false)
@@ -129,12 +131,15 @@ const ResponseScreen = (props) => {
         }
 
     }
+    const setTextSearch = (textPass) => {
+        setText(textPass)
+    }
 
     const actionClear = () => {
         // setText('')
         setClear(true)
-        // setShowSearch(true)
-        navigation.navigate('SearchScreen')
+        setShowSearch(true)
+        // navigation.navigate('SearchScreen')
     }
     //call api search
     const actionSearch = async () => {
@@ -171,7 +176,9 @@ const ResponseScreen = (props) => {
         <View style={styles.container}>
              {!showSearch && <Header actionClear={actionClear} text={text} actionSetTextSearch={actionSetTextSearch}/>}
              {
-               showSearch ? <SearchScreen closePopup={closePopup} clear={clear} textSearch = {text} popup={true}/> :
+               showSearch ? <SearchScreen closePopup={closePopup} 
+               setTextSearch = {setTextSearch}
+               clear={clear} textSearch = {text} popup={true}/> :
                isNetwork ? <View style={{ flex: 1 }}>
                 <FlatList
                     ListEmptyComponent = { notData && renderNoData()}
