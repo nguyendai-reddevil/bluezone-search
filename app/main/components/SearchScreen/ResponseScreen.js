@@ -84,7 +84,6 @@ const ResponseScreen = (props) => {
 
     const navigation = useNavigation()
     const keySearch = props?.route?.params?.key
-    console.log('proproprprprprp',keySearch)
     const [text,setText] = useState(keySearch || '')
     const [showSearch,setShowSearch] = useState(false)
     const [isNetwork,setIsNetwork] = useState(true)

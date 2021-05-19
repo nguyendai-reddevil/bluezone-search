@@ -1,10 +1,12 @@
 import React, { memo, useEffect, useState, useMemo } from 'react';
-import { View, Text, TextInput, Image, Keyboard, RefreshControl, ActivityIndicator, Platform,StatusBar } from 'react-native';
+import { View, Text, TextInput, Image, Keyboard, RefreshControl, ActivityIndicator, Platform, StatusBar } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { MSCALE,isIphoneX } from './Reponsive';
+import NetInfo from '@react-native-community/netinfo';
+import { MSCALE, isIphoneX } from './Reponsive';
 import { useNavigation } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import FastImage from 'react-native-fast-image';
+import NetworkError from './NetworkErrorScreen';
 
 import psl from 'psl'
 
@@ -16,10 +18,28 @@ const DetailScreen = (props) => {
     const indexCut = domainUrl?.indexOf('/')
     const domain = domainUrl?.slice(indexCut + 2)
     const [url, setUrl] = useState('')
+    const [isNetwork, setIsNetwork] = useState(true)
+
     // useEffect
     useEffect(() => {
+       
         setUrl(urlSearch)
     }, [url])
+    useEffect(() => {
+        checkWifi()
+    },[isNetwork])
+
+    const checkWifi = async () => {
+        try {
+            const res = await NetInfo.fetch()
+            setIsNetwork(res.isConnected)
+            console.log('resssssss',res)
+        } catch (error) {
+
+        }
+
+    }
+
     const renderHeader = () => {
         return (
             <View style={{
@@ -33,9 +53,9 @@ const DetailScreen = (props) => {
                     style={{
                         alignItems: 'center',
                         justifyContent: 'center',
-                        width:MSCALE(25),
-                        height:MSCALE(40),
-                        marginLeft:MSCALE(14)
+                        width: MSCALE(25),
+                        height: MSCALE(40),
+                        marginLeft: MSCALE(14)
                     }}
                 >
                     <Image
@@ -52,8 +72,8 @@ const DetailScreen = (props) => {
                 }}>
                     <Text style={{
                         textAlign: 'center',
-                        fontFamily:'OpenSans-Bold',
-                        color:'#015cd0',
+                        fontFamily: 'OpenSans-Bold',
+                        color: '#015cd0',
                         fontSize: MSCALE(19)
                     }}>{domain}</Text>
                 </View>
@@ -69,13 +89,14 @@ const DetailScreen = (props) => {
 
     // function handling
 
-
+    console.log('isNetwork',isNetwork)
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            {renderHeader()}
-            {renderWebview()}
-            {/* <NetworkError/> */}
+            
+                { renderHeader()}
+                {isNetwork ? renderWebview() : <NetworkError/>}
+                
         </View>
     )
 }

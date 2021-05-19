@@ -96,6 +96,7 @@ const SearchScreen = ({textSearch,popup,closePopup,clear,setTextSearch}) => {
     return (
         <View style={styles.container}>
             {/* {renderHeader()} */}
+            <StatusBar hidden />
             <ItemHeader 
             firtscreen = {firtscreen}
             text={text}
